@@ -1,0 +1,1267 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Geojit FIRE Chat – Mutual Fund SIP Readiness</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Open Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gj-teal: #07877B;
+      --gj-teal-dark: #05645c;
+      --gj-yellow: #F5CF47;
+      --gj-yellow-soft: #F6D970;
+      --gj-content: #393341;
+      --gj-body-bg: #E8FCFA;
+      --gj-card-bg: #FFFFFF;
+      --gj-border: #E1E1E1;
+      --gj-border-soft: #CECECE;
+      --gj-muted: #A5A5A5;
+      --gj-error: #CF3974;
+      --gj-grey-light: #F7F7F7;
+      --gj-grey-dark: #3C3C3C;
+      --gj-shadow-soft: 0 8px 18px rgba(0,0,0,0.05);
+      --gj-shadow-strong: 0 14px 32px rgba(0,0,0,0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      background: var(--gj-body-bg);
+      color: var(--gj-content);
+      min-height: 100vh;
+    }
+
+    a { color: var(--gj-teal); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .shell {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .header {
+      background: #FFFFFF;
+      border-bottom: 1px solid var(--gj-border);
+      padding: 8px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-block {
+      width: 120px;
+      height: 26px;
+      background: var(--gj-teal);
+      border-radius: 3px;
+      position: relative;
+      overflow: hidden;
+    }
+    .logo-block::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, #FFFFFF 0, #FFFFFF 40%, transparent 70%);
+      opacity: 0.12;
+    }
+
+    .logo-text {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--gj-content);
+    }
+
+    .header-cta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--gj-muted);
+    }
+
+    .btn-header {
+      border-radius: 20px;
+      padding: 6px 14px;
+      border: 1px solid var(--gj-teal);
+      background: rgba(7,135,123,0.06);
+      color: var(--gj-teal);
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    /* Main layout */
+    .main {
+      flex: 1;
+      padding: 18px 12px 24px;
+    }
+
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.3fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 960px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Chat panel */
+    .chat-panel {
+      background: var(--gj-card-bg);
+      border-radius: 16px;
+      border: 1px solid var(--gj-border);
+      box-shadow: var(--gj-shadow-soft);
+      display: flex;
+      flex-direction: column;
+      height: 76vh;
+      max-height: 640px;
+      min-height: 480px;
+    }
+
+    .chat-header {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--gj-border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .coach-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      background: var(--gj-teal);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFFFFF;
+      font-size: 18px;
+    }
+
+    .coach-text-block {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .coach-name {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .coach-sub {
+      font-size: 11px;
+      color: var(--gj-muted);
+    }
+
+    .chat-body {
+      flex: 1;
+      padding: 12px 12px 6px;
+      overflow-y: auto;
+      background: var(--gj-grey-light);
+    }
+
+    .chat-footer {
+      border-top: 1px solid var(--gj-border);
+      padding: 8px 10px;
+      background: #FFFFFF;
+    }
+
+    .bubble {
+      max-width: 90%;
+      padding: 8px 10px;
+      border-radius: 12px;
+      margin-bottom: 8px;
+      font-size: 13px;
+      line-height: 1.4;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+
+    .bubble-assistant {
+      background: #FFFFFF;
+      border: 1px solid var(--gj-border);
+      border-bottom-left-radius: 2px;
+    }
+
+    .bubble-user {
+      background: #DCF7F3;
+      border: 1px solid #B9E7DD;
+      border-bottom-right-radius: 2px;
+      margin-left: auto;
+    }
+
+    .bubble-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--gj-muted);
+      margin-bottom: 2px;
+    }
+
+    .bubble-strong {
+      font-weight: 600;
+    }
+
+    .chat-input-area {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .field-label {
+      font-size: 11px;
+      color: var(--gj-muted);
+    }
+
+    .input-row {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .chat-input {
+      flex: 1;
+      min-width: 0;
+      border-radius: 18px;
+      border: 1px solid var(--gj-border);
+      padding: 7px 10px;
+      font-size: 13px;
+    }
+
+    .chat-input::placeholder {
+      color: var(--gj-muted);
+    }
+
+    .chat-input:focus {
+      outline: none;
+      border-color: var(--gj-teal);
+      box-shadow: 0 0 0 1px rgba(7,135,123,0.12);
+    }
+
+    .btn-next {
+      border-radius: 18px;
+      padding: 7px 14px;
+      border: none;
+      background: var(--gj-teal);
+      color: #FFFFFF;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .btn-next:hover {
+      background: var(--gj-teal-dark);
+    }
+
+    .error-text {
+      font-size: 11px;
+      color: var(--gj-error);
+    }
+
+    /* Slider UI inside chat */
+    .slider-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .slider-row input[type="range"] {
+      flex: 1;
+      -webkit-appearance: none;
+      appearance: none;
+      height: 4px;
+      border-radius: 999px;
+      background: #E1E1E1;
+      outline: none;
+    }
+
+    .slider-row input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--gj-teal);
+      border: 2px solid #FFFFFF;
+      box-shadow: 0 0 8px rgba(7,135,123,0.45);
+      cursor: pointer;
+    }
+    .slider-row input[type="range"]::-moz-range-thumb {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--gj-teal);
+      border: 2px solid #FFFFFF;
+      cursor: pointer;
+    }
+
+    .slider-pill {
+      min-width: 90px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--gj-border);
+      font-size: 11px;
+      text-align: center;
+      background: #FFFFFF;
+      color: var(--gj-content);
+    }
+
+    .tiny-caption {
+      font-size: 11px;
+      color: var(--gj-muted);
+      margin-top: 2px;
+    }
+
+    /* Lifestyle buttons in chat */
+    .lifestyle-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .lifestyle-btn {
+      border-radius: 16px;
+      border: 1px solid var(--gj-border-soft);
+      padding: 6px 10px;
+      font-size: 12px;
+      background: #FFFFFF;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .lifestyle-btn.selected,
+    .lifestyle-btn:hover {
+      border-color: var(--gj-teal);
+      background: #DCF7F3;
+    }
+
+    /* Results panel */
+    .results-panel {
+      background: var(--gj-card-bg);
+      border-radius: 16px;
+      border: 1px solid var(--gj-border);
+      box-shadow: var(--gj-shadow-soft);
+      padding: 14px 14px 16px;
+      height: 76vh;
+      max-height: 640px;
+      min-height: 480px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .results-header {
+      margin-bottom: 8px;
+    }
+
+    .results-title {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .results-sub {
+      font-size: 12px;
+      color: var(--gj-muted);
+    }
+
+    .results-main {
+      margin-top: 10px;
+      border-radius: 12px;
+      background: linear-gradient(90deg, #FFF6D8 0, #FFFFFF 80%);
+      border: 1px solid #FBD6CC;
+      padding: 10px 10px 12px;
+    }
+
+    .corpus-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.13em;
+      color: var(--gj-muted);
+    }
+
+    .corpus-value {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--gj-content);
+      margin-top: 4px;
+    }
+
+    .corpus-caption {
+      font-size: 12px;
+      color: var(--gj-grey-dark);
+      margin-top: 4px;
+    }
+
+    .bar-wrap { margin-top: 8px; }
+    .bar-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--gj-muted);
+      margin-bottom: 4px;
+    }
+
+    .bar-outer {
+      width: 100%;
+      height: 8px;
+      border-radius: 999px;
+      background: #F3F3F3;
+      overflow: hidden;
+    }
+
+    .bar-inner {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--gj-yellow) 0, var(--gj-teal) 100%);
+      transition: width 0.6s ease-out;
+    }
+
+    .score-pill {
+      border-radius: 999px;
+      border: 1px solid var(--gj-teal);
+      padding: 2px 6px;
+      font-size: 11px;
+      color: var(--gj-teal);
+      background: #FFFFFF;
+    }
+
+    .secondary-grid {
+      margin-top: 10px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 8px;
+    }
+
+    @media (max-width: 540px) {
+      .secondary-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .secondary-card {
+      border-radius: 10px;
+      border: 1px solid var(--gj-border);
+      background: #FFFFFF;
+      padding: 8px;
+    }
+
+    .secondary-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.13em;
+      color: var(--gj-muted);
+      margin-bottom: 4px;
+    }
+
+    .secondary-value {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--gj-content);
+    }
+
+    .secondary-caption {
+      margin-top: 3px;
+      font-size: 11px;
+      color: var(--gj-muted);
+    }
+
+    .mf-block {
+      margin-top: 10px;
+      border-radius: 12px;
+      background: #F6FDFB;
+      border: 1px solid #B6E5DB;
+      padding: 8px;
+    }
+
+    .mf-tag {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.13em;
+      color: var(--gj-teal);
+      margin-bottom: 4px;
+    }
+
+    .mf-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .mf-chip {
+      border-radius: 999px;
+      border: 1px solid var(--gj-teal);
+      padding: 4px 8px;
+      font-size: 11px;
+      background: #FFFFFF;
+      color: var(--gj-teal);
+    }
+
+    .mf-note {
+      margin-top: 5px;
+      font-size: 11px;
+      color: var(--gj-muted);
+    }
+
+    .badge-card {
+      margin-top: 8px;
+      border-radius: 10px;
+      border: 1px dashed var(--gj-border-soft);
+      background: #FFFFFF;
+      padding: 8px 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .badge-pill {
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 11px;
+      background: var(--gj-yellow-soft);
+      color: var(--gj-content);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .badge-text {
+      font-size: 11px;
+      color: var(--gj-grey-dark);
+    }
+
+    .delay-card {
+      margin-top: 8px;
+      border-radius: 10px;
+      border: 1px solid #FBD6CC;
+      background: #FFF7F4;
+      padding: 8px;
+    }
+
+    .delay-amount {
+      margin-top: 4px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gj-error);
+    }
+
+    .delay-caption {
+      font-size: 11px;
+      color: var(--gj-muted);
+      margin-top: 4px;
+    }
+
+    .results-actions {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .btn-secondary {
+      border-radius: 18px;
+      padding: 7px 14px;
+      border: 1px solid var(--gj-teal);
+      background: #FFFFFF;
+      color: var(--gj-teal);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-ghost {
+      border-radius: 18px;
+      padding: 7px 14px;
+      border: 1px dashed var(--gj-border-soft);
+      background: #FFFFFF;
+      color: var(--gj-grey-dark);
+      font-size: 12px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .results-footer {
+      margin-top: 10px;
+      font-size: 10px;
+      color: var(--gj-muted);
+      line-height: 1.4;
+    }
+
+    @media print {
+      .header,
+      .chat-panel,
+      .results-actions {
+        display: none !important;
+      }
+      body {
+        background: #FFFFFF;
+      }
+      .main {
+        padding: 10px;
+      }
+      .results-panel {
+        height: auto;
+        max-height: none;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="shell">
+  <header class="header">
+    <div class="logo-wrap">
+      <div class="logo-block"></div>
+      <div class="logo-text">FIRE Readiness Chat</div>
+    </div>
+    <div class="header-cta">
+      <span>Mutual Fund · SIP · Financial Independence</span>
+      <button class="btn-header" type="button">Request a call back</button>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="container">
+      <div class="layout">
+        <!-- CHAT PANEL -->
+        <section class="chat-panel">
+          <div class="chat-header">
+            <div class="coach-avatar">🔥</div>
+            <div class="coach-text-block">
+              <span class="coach-name" id="coachName">FIRE Coach</span>
+              <span class="coach-sub">Let’s chat and build your FIRE snapshot in 2 minutes.</span>
+            </div>
+          </div>
+          <div class="chat-body" id="chatBody">
+            <!-- Bubbles will be injected here -->
+          </div>
+          <div class="chat-footer" id="chatFooter">
+            <!-- Step-specific input will be injected here -->
+          </div>
+        </section>
+
+        <!-- RESULTS PANEL -->
+        <section class="results-panel">
+          <div class="results-header">
+            <div class="results-title" id="resultsTitle">Your personalised FIRE report</div>
+            <div class="results-sub" id="resultsSub">
+              I’ll update this panel as you answer each question on the left.
+            </div>
+          </div>
+
+          <div class="results-main">
+            <div class="corpus-label">Estimated FIRE corpus (freedom number)</div>
+            <div class="corpus-value" id="corpusOutput">₹ —</div>
+            <div class="corpus-caption" id="corpusNote">
+              We’ll estimate your “freedom number” after you share your expenses, age and FIRE lifestyle.
+            </div>
+
+            <div class="bar-wrap">
+              <div class="bar-row">
+                <span>FIRE readiness bar</span>
+                <span class="score-pill">Score: <span id="scoreOutput">—</span>/100</span>
+              </div>
+              <div class="bar-outer">
+                <div class="bar-inner" id="readinessBar"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="secondary-grid">
+            <div class="secondary-card">
+              <div class="secondary-title">Suggested monthly SIP</div>
+              <div class="secondary-value" id="sipOutput">₹ —</div>
+              <div class="secondary-caption" id="sipNote">
+                Once we have your details, we’ll show an indicative SIP amount based on long-term mutual fund returns.
+              </div>
+            </div>
+            <div class="secondary-card">
+              <div class="secondary-title">Years to FIRE</div>
+              <div class="secondary-value" id="yearsToFireOutput">— yrs</div>
+              <div class="secondary-caption" id="yearsNote">
+                This is simply the difference between your target FIRE age and current age.
+              </div>
+            </div>
+          </div>
+
+          <div class="mf-block">
+            <div class="mf-tag">Indicative mutual fund category mix</div>
+            <div class="secondary-caption" id="mfMixText">
+              After your FIRE snapshot is ready, I’ll suggest an example mix of equity, hybrid and debt categories based on your time to FIRE.
+            </div>
+            <div class="mf-row" id="mfChipsRow" style="display:none;"></div>
+            <div class="mf-note">
+              This is an educational illustration only, not a recommendation for any specific scheme. Your Relationship Manager / advisor can help you choose actual schemes as per regulations and your risk profile.
+            </div>
+          </div>
+
+          <div class="badge-card">
+            <div>
+              <div class="badge-pill" id="badgePill">
+                <span>🔥</span><span id="badgeLabel">Spark Starter</span>
+              </div>
+              <div class="badge-text" id="badgeText">
+                Answer a few questions in the chat to see where you stand on your FIRE journey.
+              </div>
+            </div>
+            <button class="btn-secondary" type="button" id="copySummaryBtn">📋 Copy summary</button>
+          </div>
+
+          <div class="delay-card">
+            <div class="secondary-title">What if you delay starting your SIP?</div>
+            <div class="slider-row" style="margin-top:4px;">
+              <input id="delaySlider" type="range" min="0" max="10" value="1" />
+              <div class="slider-pill" id="delayValue">Delay: 1 year</div>
+            </div>
+            <div class="delay-amount" id="delayAmount">₹ — potential value you might leave on the table.</div>
+            <div class="delay-caption">
+              This is a simplified illustration assuming long-term equity mutual fund returns.
+              Actual outcomes will differ, but it shows why starting early often helps.
+            </div>
+          </div>
+
+          <div class="results-actions">
+            <button class="btn-secondary" type="button" id="whatsappBtn">💬 Share via WhatsApp</button>
+            <button class="btn-ghost" type="button" onclick="window.print();">⬇ Download / Print report</button>
+          </div>
+
+          <div class="results-footer">
+            <p>
+              This FIRE readiness chat is for educational and engagement purposes only. It uses simple assumptions
+              to help you visualise mutual fund SIPs and long-term compounding.
+            </p>
+            <p>
+              It is not investment advice or a recommendation for any specific product. Please consult your Relationship
+              Manager / SEBI-registered investment advisor before making investment decisions.
+            </p>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+  // ---- Helpers ----
+  function formatINR(num) {
+    if (!isFinite(num) || num <= 0) return "₹ —";
+    return "₹" + Math.round(num).toLocaleString("en-IN");
+  }
+  function clamp(v, min, max) {
+    return Math.min(max, Math.max(min, v));
+  }
+
+  // ---- State ----
+  const state = {
+    name: "",
+    email: "",
+    mobile: "",
+    monthlyExpense: 60000,
+    age: 35,
+    fireAge: 55,
+    lifestyleFactor: 1,
+    lifestyleLabel: "Regular FIRE",
+    currentCorpus: 0,
+    score: 0,
+    corpus: 0,
+    sip: 0,
+    yearsToFire: 20
+  };
+
+  let currentStep = 0;
+  const steps = [
+    "askName",
+    "askContact",
+    "askAge",
+    "askFireAge",
+    "askExpense",
+    "askLifestyle",
+    "askCorpus",
+    "showSummary"
+  ];
+
+  // ---- DOM refs ----
+  const chatBody = document.getElementById("chatBody");
+  const chatFooter = document.getElementById("chatFooter");
+  const coachNameEl = document.getElementById("coachName");
+
+  const corpusOutput = document.getElementById("corpusOutput");
+  const corpusNote = document.getElementById("corpusNote");
+  const readinessBar = document.getElementById("readinessBar");
+  const scoreOutput = document.getElementById("scoreOutput");
+  const sipOutput = document.getElementById("sipOutput");
+  const sipNote = document.getElementById("sipNote");
+  const yearsToFireOutput = document.getElementById("yearsToFireOutput");
+  const yearsNote = document.getElementById("yearsNote");
+  const resultsTitle = document.getElementById("resultsTitle");
+  const resultsSub = document.getElementById("resultsSub");
+
+  const mfMixText = document.getElementById("mfMixText");
+  const mfChipsRow = document.getElementById("mfChipsRow");
+  const badgePill = document.getElementById("badgePill");
+  const badgeLabel = document.getElementById("badgeLabel");
+  const badgeText = document.getElementById("badgeText");
+
+  const delaySlider = document.getElementById("delaySlider");
+  const delayValue = document.getElementById("delayValue");
+  const delayAmount = document.getElementById("delayAmount");
+
+  const whatsappBtn = document.getElementById("whatsappBtn");
+  const copySummaryBtn = document.getElementById("copySummaryBtn");
+
+  // ----- Chat rendering -----
+  function appendAssistant(text) {
+    const bubble = document.createElement("div");
+    bubble.className = "bubble bubble-assistant";
+    bubble.innerHTML = text;
+    chatBody.appendChild(bubble);
+    chatBody.scrollTop = chatBody.scrollHeight;
+  }
+
+  function appendUser(text) {
+    const bubble = document.createElement("div");
+    bubble.className = "bubble bubble-user";
+    bubble.textContent = text;
+    chatBody.appendChild(bubble);
+    chatBody.scrollTop = chatBody.scrollHeight;
+  }
+
+  function clearFooter() {
+    chatFooter.innerHTML = "";
+  }
+
+  function updateDelayUI() {
+    const years = parseInt(delaySlider.value, 10) || 0;
+    delayValue.textContent = "Delay: " + years + (years === 1 ? " year" : " years");
+  }
+  delaySlider.addEventListener("input", () => {
+    updateDelayUI();
+    updateDelayImpact();
+  });
+  updateDelayUI();
+
+  // Steps
+  function renderStep() {
+    clearFooter();
+    const step = steps[currentStep];
+    if (step === "askName") {
+      appendAssistant("<span class='bubble-label'>Let’s start</span>Hi, I’m your FIRE Coach. What’s your <span class='bubble-strong'>name</span>?");
+      const wrapper = document.createElement("div");
+      wrapper.className = "chat-input-area";
+      wrapper.innerHTML = `
+        <div class="field-label">Type your name</div>
+        <div class="input-row">
+          <input type="text" id="nameInput" class="chat-input" placeholder="Eg: Rahul Menon" />
+          <button class="btn-next" id="btnName">Next →</button>
+        </div>
+        <div class="error-text" id="nameError" style="display:none;">Please enter your name.</div>
+      `;
+      chatFooter.appendChild(wrapper);
+      document.getElementById("nameInput").focus();
+      document.getElementById("btnName").onclick = () => {
+        const val = document.getElementById("nameInput").value.trim();
+        if (!val) {
+          document.getElementById("nameError").style.display = "block";
+          return;
+        }
+        state.name = val;
+        coachNameEl.textContent = "FIRE Coach for " + val.split(" ")[0];
+        resultsTitle.textContent = val + ", here’s your FIRE snapshot";
+        resultsSub.textContent = "As we chat, I’ll build this personalised FIRE report for you.";
+        appendUser(val);
+        currentStep++;
+        renderStep();
+      };
+    } else if (step === "askContact") {
+      appendAssistant("Nice to meet you, <span class='bubble-strong'>" + state.name + "</span> 🙌<br/>If you’d like, you can share your email and mobile so an RM can help you later. This is optional.");
+      const wrapper = document.createElement("div");
+      wrapper.className = "chat-input-area";
+      wrapper.innerHTML = `
+        <div class="field-label">Contact (optional)</div>
+        <div class="input-row" style="flex-wrap:wrap;">
+          <input type="email" id="emailInput" class="chat-input" placeholder="Email (optional)" />
+          <input type="tel" id="mobileInput" class="chat-input" placeholder="Mobile (optional)" />
+          <button class="btn-next" id="btnContact">Next →</button>
+        </div>
+      `;
+      chatFooter.appendChild(wrapper);
+      document.getElementById("emailInput").focus();
+      document.getElementById("btnContact").onclick = () => {
+        state.email = document.getElementById("emailInput").value.trim();
+        state.mobile = document.getElementById("mobileInput").value.trim();
+        let summary = "";
+        if (state.email) summary += "Email: " + state.email;
+        if (state.mobile) summary += (summary ? " · " : "") + "Mobile: " + state.mobile;
+        if (!summary) summary = "(Skipped contact details)";
+        appendUser(summary);
+        currentStep++;
+        renderStep();
+      };
+    } else if (step === "askAge") {
+      appendAssistant("Great. To understand your timeline, what is your <span class='bubble-strong'>current age</span>?");
+      const wrapper = document.createElement("div");
+      wrapper.className = "chat-input-area";
+      wrapper.innerHTML = `
+        <div class="field-label">Slide to set your age</div>
+        <div class="slider-row">
+          <input id="ageSlider" type="range" min="22" max="55" value="${state.age}" />
+          <div class="slider-pill" id="ageValue">${state.age} years</div>
+        </div>
+        <div class="tiny-caption">You can adjust this later if needed.</div>
+        <div style="margin-top:6px;">
+          <button class="btn-next" id="btnAge">Next →</button>
+        </div>
+      `;
+      chatFooter.appendChild(wrapper);
+      const ageSlider = document.getElementById("ageSlider");
+      const ageValue = document.getElementById("ageValue");
+      ageSlider.addEventListener("input", () => {
+        ageValue.textContent = ageSlider.value + " years";
+      });
+      document.getElementById("btnAge").onclick = () => {
+        state.age = parseInt(ageSlider.value, 10) || 30;
+        appendUser(state.age + " years");
+        currentStep++;
+        renderStep();
+      };
+    } else if (step === "askFireAge") {
+      appendAssistant("And at what age would you like <span class='bubble-strong'>work to be optional</span>? (Your target FIRE age)");
+      const wrapper = document.createElement("div");
+      wrapper.className = "chat-input-area";
+      wrapper.innerHTML = `
+        <div class="field-label">Slide to set your FIRE age</div>
+        <div class="slider-row">
+          <input id="fireAgeSlider" type="range" min="40" max="65" value="${state.fireAge}" />
+          <div class="slider-pill" id="fireAgeValue">${state.fireAge} years</div>
+        </div>
+        <div class="tiny-caption">This helps us calculate how many years you have to build your corpus.</div>
+        <div style="margin-top:6px;">
+          <button class="btn-next" id="btnFireAge">Next →</button>
+        </div>
+      `;
+      chatFooter.appendChild(wrapper);
+      const fireAgeSlider = document.getElementById("fireAgeSlider");
+      const fireAgeValue = document.getElementById("fireAgeValue");
+      fireAgeSlider.addEventListener("input", () => {
+        fireAgeValue.textContent = fireAgeSlider.value + " years";
+      });
+      document.getElementById("btnFireAge").onclick = () => {
+        state.fireAge = parseInt(fireAgeSlider.value, 10) || 55;
+        appendUser(state.fireAge + " years");
+        currentStep++;
+        renderStep();
+      };
+    } else if (step === "askExpense") {
+      appendAssistant("Now, roughly how much do you spend in a month on your lifestyle – <span class='bubble-strong'>monthly living expenses</span>?");
+      const wrapper = document.createElement("div");
+      wrapper.className = "chat-input-area";
+      wrapper.innerHTML = `
+        <div class="field-label">Estimate your current monthly expense</div>
+        <div class="slider-row">
+          <input id="expenseSlider" type="range" min="15000" max="200000" step="5000" value="${state.monthlyExpense}" />
+          <div class="slider-pill" id="expenseValue">₹${state.monthlyExpense.toLocaleString("en-IN")}</div>
+        </div>
+        <div class="tiny-caption" id="expenseMood">🙂 Balanced lifestyle spend.</div>
+        <div style="margin-top:6px;">
+          <button class="btn-next" id="btnExpense">Next →</button>
+        </div>
+      `;
+      chatFooter.appendChild(wrapper);
+      const expenseSlider = document.getElementById("expenseSlider");
+      const expenseValue = document.getElementById("expenseValue");
+      const expenseMood = document.getElementById("expenseMood");
+      function updateExpenseUI() {
+        const val = parseInt(expenseSlider.value, 10) || 0;
+        expenseValue.textContent = "₹" + val.toLocaleString("en-IN");
+        let mood = "🙂 Balanced lifestyle spend.";
+        if (val < 30000) mood = "😌 Minimal cost of living.";
+        else if (val > 100000) mood = "😎 Premium lifestyle spend.";
+        expenseMood.textContent = mood;
+      }
+      expenseSlider.addEventListener("input", updateExpenseUI);
+      updateExpenseUI();
+      document.getElementById("btnExpense").onclick = () => {
+        state.monthlyExpense = parseInt(expenseSlider.value, 10) || 60000;
+        appendUser("₹" + state.monthlyExpense.toLocaleString("en-IN") + " per month");
+        currentStep++;
+        renderStep();
+      };
+    } else if (step === "askLifestyle") {
+      appendAssistant("How would you describe your preferred <span class='bubble-strong'>FIRE lifestyle</span>?");
+      const wrapper = document.createElement("div");
+      wrapper.className = "chat-input-area";
+      wrapper.innerHTML = `
+        <div class="field-label">Choose a lifestyle</div>
+        <div class="lifestyle-row">
+          <button type="button" class="lifestyle-btn" data-factor="0.9" data-label="Lean FIRE">🧘 Lean FIRE</button>
+          <button type="button" class="lifestyle-btn selected" data-factor="1" data-label="Regular FIRE">🏡 Regular FIRE</button>
+          <button type="button" class="lifestyle-btn" data-factor="1.2" data-label="Fat FIRE">💎 Fat FIRE</button>
+        </div>
+        <div style="margin-top:6px;">
+          <button class="btn-next" id="btnLifestyle">Next →</button>
+        </div>
+      `;
+      chatFooter.appendChild(wrapper);
+      const buttons = wrapper.querySelectorAll(".lifestyle-btn");
+      buttons.forEach(btn => {
+        btn.addEventListener("click", () => {
+          buttons.forEach(b => b.classList.remove("selected"));
+          btn.classList.add("selected");
+          state.lifestyleFactor = parseFloat(btn.getAttribute("data-factor")) || 1;
+          state.lifestyleLabel = btn.getAttribute("data-label") || "Regular FIRE";
+        });
+      });
+      document.getElementById("btnLifestyle").onclick = () => {
+        appendUser(state.lifestyleLabel);
+        currentStep++;
+        renderStep();
+      };
+    } else if (step === "askCorpus") {
+      appendAssistant("Last one – do you already have any <span class='bubble-strong'>investments earmarked for retirement</span>? You can share an approximate amount.");
+      const wrapper = document.createElement("div");
+      wrapper.className = "chat-input-area";
+      wrapper.innerHTML = `
+        <div class="field-label">Approximate corpus set aside for retirement (optional)</div>
+        <div class="input-row">
+          <input type="number" id="corpusInput" class="chat-input" placeholder="Eg: 500000 for ₹5,00,000" min="0" />
+          <button class="btn-next" id="btnCorpus">See my FIRE snapshot →</button>
+        </div>
+        <div class="tiny-caption">If you’re just starting, you can leave this as 0.</div>
+      `;
+      chatFooter.appendChild(wrapper);
+      document.getElementById("corpusInput").focus();
+      document.getElementById("btnCorpus").onclick = () => {
+        const val = document.getElementById("corpusInput").value.trim();
+        state.currentCorpus = parseFloat(val || "0") || 0;
+        appendUser(state.currentCorpus > 0 ? formatINR(state.currentCorpus) : "No corpus yet / starting now");
+        currentStep++;
+        renderStep();
+      };
+    } else if (step === "showSummary") {
+      appendAssistant("Perfect. Based on what you shared, here’s your FIRE snapshot on the right – including your freedom number, indicative SIP and a sample mutual fund category mix.");
+      clearFooter();
+      computeAndRender();
+    }
+  }
+
+  // MF mix suggestion
+  function getMfMix(yearsToFIRE) {
+    if (yearsToFIRE >= 20) {
+      return {
+        text: "You have a long runway. Typically, a higher equity allocation with some hybrid exposure is used for growth.",
+        chips: [
+          "Equity: 80% (Large / Flexi / Index)",
+          "Hybrid / Balanced Advantage: 20%"
+        ]
+      };
+    } else if (yearsToFIRE >= 10) {
+      return {
+        text: "A balanced mix can work – equity for growth, hybrid for stability and a slice of short-duration debt.",
+        chips: [
+          "Equity: 60%",
+          "Hybrid / Balanced Advantage: 30%",
+          "Short Duration / Corporate Bond: 10%"
+        ]
+      };
+    } else {
+      return {
+        text: "Closer to FIRE age, many investors tilt more to hybrid and debt to moderate risk.",
+        chips: [
+          "Equity: 40%",
+          "Hybrid / Balanced Advantage: 40%",
+          "Short Duration / Corporate Bond: 20%"
+        ]
+      };
+    }
+  }
+
+  // FIRE calculations
+  function computeAndRender() {
+    const yearlyExpense = state.monthlyExpense * 12;
+    const yearsToFIRE = Math.max(1, state.fireAge - state.age);
+    const corpus = yearlyExpense * 25 * state.lifestyleFactor;
+
+    const readiness = corpus > 0 ? clamp(state.currentCorpus / corpus, 0, 1) : 0;
+    const yearsFactor = clamp(yearsToFIRE / 35, 0, 1);
+    const score = Math.round(readiness * 70 + yearsFactor * 30);
+
+    const r = 0.11 / 12;
+    const n = yearsToFIRE * 12;
+    let sip = 0;
+    if (corpus > state.currentCorpus && n > 0 && r > 0) {
+      const targetFuture = corpus - state.currentCorpus;
+      const factor = (Math.pow(1 + r, n) - 1) / r;
+      sip = targetFuture / factor;
+    }
+
+    state.corpus = corpus;
+    state.yearsToFire = yearsToFIRE;
+    state.score = isFinite(score) ? score : 0;
+    state.sip = sip;
+
+    // Update results panel
+    corpusOutput.textContent = formatINR(corpus);
+    corpusNote.textContent =
+      "Approximate FIRE corpus for a " + state.lifestyleLabel +
+      " lifestyle, assuming about 25× your annual expenses.";
+
+    readinessBar.style.width = (readiness * 100).toFixed(0) + "%";
+    scoreOutput.textContent = isFinite(score) ? score : "—";
+
+    yearsToFireOutput.textContent = yearsToFIRE + " yrs";
+    yearsNote.textContent =
+      "You have roughly " + yearsToFIRE +
+      " years for your mutual fund SIPs to compound before your FIRE age.";
+
+    sipOutput.textContent = sip > 0 ? formatINR(sip) + "/month" : "₹ —";
+    sipNote.textContent =
+      sip > 0
+        ? "A steady SIP of this amount into suitable mutual funds could help you move towards this FIRE corpus over time."
+        : "Try adjusting your FIRE age or expenses to see an indicative SIP.";
+
+    // Badge
+    updateBadge(state.score);
+
+    // MF mix
+    const mix = getMfMix(yearsToFIRE);
+    mfMixText.textContent = mix.text;
+    mfChipsRow.innerHTML = "";
+    mix.chips.forEach(label => {
+      const chip = document.createElement("div");
+      chip.className = "mf-chip";
+      chip.textContent = label;
+      mfChipsRow.appendChild(chip);
+    });
+    mfChipsRow.style.display = "flex";
+
+    // Delay impact
+    updateDelayImpact();
+  }
+
+  function updateBadge(score) {
+    let label = "Spark Starter";
+    let text = "You’re switching on the FIRE light. A simple, consistent SIP can turn this spark into something meaningful.";
+    let emoji = "🔥";
+
+    if (score >= 41 && score <= 60) {
+      label = "Flame Builder";
+      text = "You’ve already taken some good steps. Keeping your SIP regular and increasing it with income can strengthen your FIRE path.";
+      emoji = "🔥🔥";
+    } else if (score >= 61 && score <= 80) {
+      label = "FIRE Warrior";
+      text = "You’re doing many things right. Fine-tuning your asset mix and SIP amount yearly can keep you on track for early freedom.";
+      emoji = "🔥🔥🔥";
+    } else if (score > 80) {
+      label = "Freedom Seeker";
+      text = "You’re in a strong position. Protecting your discipline and avoiding lifestyle creep will help you guard this advantage.";
+      emoji = "💸🔥";
+    }
+
+    badgeLabel.textContent = label;
+    badgePill.querySelector("span").textContent = emoji;
+    badgeText.textContent = text;
+  }
+
+  function updateDelayImpact() {
+    const delayYears = parseInt(delaySlider.value, 10) || 0;
+    if (!state.sip || state.sip <= 0 || delayYears <= 0) {
+      delayAmount.textContent = "₹ — potential value you might leave on the table.";
+      return;
+    }
+    const r = 0.11 / 12;
+    const months = delayYears * 12;
+    const factor = (Math.pow(1 + r, months) - 1) / r;
+    const lost = state.sip * factor;
+    delayAmount.textContent =
+      formatINR(lost) +
+      " is the approximate future value you might miss if you delay your SIP by " +
+      delayYears +
+      (delayYears === 1 ? " year." : " years.");
+  }
+
+  // Share + copy
+  copySummaryBtn.addEventListener("click", () => {
+    if (!state.corpus || !state.yearsToFire) {
+      alert("Please finish the chat to generate your FIRE snapshot first.");
+      return;
+    }
+    const namePart = state.name ? (state.name + " – FIRE readiness snapshot\n\n") : "";
+    const msg =
+      namePart +
+      "FIRE Score: " + state.score + "/100\n" +
+      "Estimated FIRE Corpus: " + formatINR(state.corpus) + "\n" +
+      "Indicative SIP: " + (state.sip > 0 ? formatINR(state.sip) + "/month" : "—") + "\n" +
+      "Years to FIRE: " + state.yearsToFire + "\n\n" +
+      "This is an educational illustration using Geojit’s FIRE Readiness chat tool.";
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(msg).then(() => {
+        alert("Summary copied. You can paste it into email, notes or chat.");
+      }, () => {
+        alert("Copy failed. Please copy manually from the screen.");
+      });
+    } else {
+      alert("Your browser doesn’t support auto-copy. Please copy manually.");
+    }
+  });
+
+  whatsappBtn.addEventListener("click", () => {
+    if (!state.corpus || !state.yearsToFire) {
+      alert("Please finish the chat to generate your FIRE snapshot first.");
+      return;
+    }
+    const intro = state.name
+      ? state.name + " just checked their FIRE readiness. "
+      : "I just checked my FIRE readiness. ";
+    const text =
+      intro +
+      "FIRE Score: " + state.score + "/100\n" +
+      "Estimated FIRE Corpus: " + formatINR(state.corpus) + "\n" +
+      "Indicative SIP: " + (state.sip > 0 ? formatINR(state.sip) + "/month" : "—") + "\n" +
+      "Years to FIRE: " + state.yearsToFire + "\n\n" +
+      "Check your own FIRE readiness with this mutual fund SIP-based tool.";
+    const url = "https://wa.me/?text=" + encodeURIComponent(text);
+    window.open(url, "_blank");
+  });
+
+  // Start chat
+  renderStep();
+</script>
+</body>
+</html>
