@@ -1,9 +1,8 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Geojit FIRE Chat – Mutual Fund SIP Readiness</title>
+  <title>Geojit FIRE Coach – Mutual Fund SIP Readiness Chat</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <!-- Open Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,17 +14,19 @@
       --gj-teal-dark: #05645c;
       --gj-yellow: #F5CF47;
       --gj-yellow-soft: #F6D970;
-      --gj-content: #393341;
-      --gj-body-bg: #E8FCFA;
-      --gj-card-bg: #FFFFFF;
-      --gj-border: #E1E1E1;
-      --gj-border-soft: #CECECE;
-      --gj-muted: #A5A5A5;
-      --gj-error: #CF3974;
-      --gj-grey-light: #F7F7F7;
-      --gj-grey-dark: #3C3C3C;
-      --gj-shadow-soft: 0 8px 18px rgba(0,0,0,0.05);
-      --gj-shadow-strong: 0 14px 32px rgba(0,0,0,0.08);
+      --gj-content: #E5E7EB;
+      --gj-body-bg: #020617; /* dark */
+      --gj-card-bg: #020617; /* chat background */
+      --gj-panel-bg: #0f172a; /* right panel dark slate */
+      --gj-panel-alt: #111827;
+      --gj-border: #1f2937;
+      --gj-border-soft: #374151;
+      --gj-muted: #9CA3AF;
+      --gj-error: #F97373;
+      --gj-grey-light: #111827;
+      --gj-grey-dark: #E5E7EB;
+      --gj-shadow-soft: 0 8px 18px rgba(0,0,0,0.45);
+      --gj-shadow-strong: 0 14px 32px rgba(0,0,0,0.6);
     }
 
     * {
@@ -36,12 +37,12 @@
     }
 
     body {
-      background: var(--gj-body-bg);
+      background: radial-gradient(circle at top, #0f172a 0, #020617 45%, #000000 100%);
       color: var(--gj-content);
       min-height: 100vh;
     }
 
-    a { color: var(--gj-teal); text-decoration: none; }
+    a { color: var(--gj-yellow-soft); text-decoration: none; }
     a:hover { text-decoration: underline; }
 
     .shell {
@@ -52,13 +53,17 @@
 
     /* Header */
     .header {
-      background: #FFFFFF;
+      background: rgba(15,23,42,0.95);
       border-bottom: 1px solid var(--gj-border);
       padding: 8px 18px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.6);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
     }
 
     .logo-wrap {
@@ -84,9 +89,9 @@
     }
 
     .logo-text {
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 700;
-      color: var(--gj-content);
+      color: #F9FAFB;
     }
 
     .header-cta {
@@ -98,13 +103,20 @@
     }
 
     .btn-header {
-      border-radius: 20px;
+      border-radius: 999px;
       padding: 6px 14px;
       border: 1px solid var(--gj-teal);
-      background: rgba(7,135,123,0.06);
-      color: var(--gj-teal);
+      background: rgba(7,135,123,0.14);
+      color: #E5FFFB;
       cursor: pointer;
       font-size: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-header:hover {
+      background: rgba(7,135,123,0.24);
     }
 
     /* Main layout */
@@ -132,15 +144,15 @@
 
     /* Chat panel */
     .chat-panel {
-      background: var(--gj-card-bg);
-      border-radius: 16px;
-      border: 1px solid var(--gj-border);
+      background: radial-gradient(circle at top left, #111827 0, #020617 60%);
+      border-radius: 20px;
+      border: 1px solid var(--gj-border-soft);
       box-shadow: var(--gj-shadow-soft);
       display: flex;
       flex-direction: column;
-      height: 76vh;
-      max-height: 640px;
-      min-height: 480px;
+      height: 78vh;
+      max-height: 660px;
+      min-height: 500px;
     }
 
     .chat-header {
@@ -152,15 +164,16 @@
     }
 
     .coach-avatar {
-      width: 34px;
-      height: 34px;
+      width: 36px;
+      height: 36px;
       border-radius: 999px;
-      background: var(--gj-teal);
+      background: radial-gradient(circle at 30% 10%, #F59E0B 0, #EA580C 35%, #7C2D12 100%);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #FFFFFF;
-      font-size: 18px;
+      color: #FEFCE8;
+      font-size: 20px;
+      box-shadow: 0 0 18px rgba(248,250,252,0.3);
     }
 
     .coach-text-block {
@@ -171,6 +184,7 @@
     .coach-name {
       font-size: 13px;
       font-weight: 600;
+      color: #F9FAFB;
     }
 
     .coach-sub {
@@ -182,36 +196,39 @@
       flex: 1;
       padding: 12px 12px 6px;
       overflow-y: auto;
-      background: var(--gj-grey-light);
+      background: radial-gradient(circle at top, #020617 0, #020617 70%);
     }
 
     .chat-footer {
       border-top: 1px solid var(--gj-border);
       padding: 8px 10px;
-      background: #FFFFFF;
+      background: #020617;
+      border-radius: 0 0 20px 20px;
     }
 
     .bubble {
       max-width: 90%;
       padding: 8px 10px;
-      border-radius: 12px;
+      border-radius: 14px;
       margin-bottom: 8px;
       font-size: 13px;
       line-height: 1.4;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.45);
     }
 
     .bubble-assistant {
-      background: #FFFFFF;
-      border: 1px solid var(--gj-border);
-      border-bottom-left-radius: 2px;
+      background: rgba(15,23,42,0.96);
+      border: 1px solid var(--gj-border-soft);
+      border-bottom-left-radius: 4px;
+      color: #E5E7EB;
     }
 
     .bubble-user {
-      background: #DCF7F3;
-      border: 1px solid #B9E7DD;
-      border-bottom-right-radius: 2px;
+      background: linear-gradient(135deg, #22C55E 0, #16A34A 40%, #166534 100%);
+      border: 1px solid rgba(34,197,94,0.6);
+      border-bottom-right-radius: 4px;
       margin-left: auto;
+      color: #ECFDF5;
     }
 
     .bubble-label {
@@ -220,10 +237,12 @@
       letter-spacing: 0.12em;
       color: var(--gj-muted);
       margin-bottom: 2px;
+      display: block;
     }
 
     .bubble-strong {
       font-weight: 600;
+      color: #FACC15;
     }
 
     .chat-input-area {
@@ -246,10 +265,12 @@
     .chat-input {
       flex: 1;
       min-width: 0;
-      border-radius: 18px;
-      border: 1px solid var(--gj-border);
-      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--gj-border-soft);
+      padding: 7px 12px;
       font-size: 13px;
+      background: #020617;
+      color: var(--gj-grey-dark);
     }
 
     .chat-input::placeholder {
@@ -259,15 +280,15 @@
     .chat-input:focus {
       outline: none;
       border-color: var(--gj-teal);
-      box-shadow: 0 0 0 1px rgba(7,135,123,0.12);
+      box-shadow: 0 0 0 1px rgba(7,135,123,0.3);
     }
 
     .btn-next {
-      border-radius: 18px;
+      border-radius: 999px;
       padding: 7px 14px;
       border: none;
-      background: var(--gj-teal);
-      color: #FFFFFF;
+      background: linear-gradient(135deg, #22C55E 0, #16A34A 50%, #15803D 100%);
+      color: #ECFDF5;
       font-size: 12px;
       font-weight: 600;
       cursor: pointer;
@@ -275,10 +296,11 @@
       align-items: center;
       gap: 6px;
       white-space: nowrap;
+      box-shadow: 0 8px 18px rgba(22,163,74,0.6);
     }
 
     .btn-next:hover {
-      background: var(--gj-teal-dark);
+      filter: brightness(1.08);
     }
 
     .error-text {
@@ -299,7 +321,7 @@
       appearance: none;
       height: 4px;
       border-radius: 999px;
-      background: #E1E1E1;
+      background: #1F2937;
       outline: none;
     }
 
@@ -308,29 +330,29 @@
       width: 16px;
       height: 16px;
       border-radius: 50%;
-      background: var(--gj-teal);
-      border: 2px solid #FFFFFF;
-      box-shadow: 0 0 8px rgba(7,135,123,0.45);
+      background: #22C55E;
+      border: 2px solid #020617;
+      box-shadow: 0 0 10px rgba(34,197,94,0.9);
       cursor: pointer;
     }
     .slider-row input[type="range"]::-moz-range-thumb {
       width: 16px;
       height: 16px;
       border-radius: 50%;
-      background: var(--gj-teal);
-      border: 2px solid #FFFFFF;
+      background: #22C55E;
+      border: 2px solid #020617;
       cursor: pointer;
     }
 
     .slider-pill {
-      min-width: 90px;
+      min-width: 96px;
       padding: 4px 8px;
       border-radius: 999px;
-      border: 1px solid var(--gj-border);
+      border: 1px solid var(--gj-border-soft);
       font-size: 11px;
       text-align: center;
-      background: #FFFFFF;
-      color: var(--gj-content);
+      background: #020617;
+      color: var(--gj-grey-dark);
     }
 
     .tiny-caption {
@@ -352,29 +374,57 @@
       border: 1px solid var(--gj-border-soft);
       padding: 6px 10px;
       font-size: 12px;
-      background: #FFFFFF;
+      background: #020617;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      color: var(--gj-grey-dark);
     }
 
     .lifestyle-btn.selected,
     .lifestyle-btn:hover {
-      border-color: var(--gj-teal);
-      background: #DCF7F3;
+      border-color: #22C55E;
+      background: rgba(22,163,74,0.12);
+    }
+
+    /* Risk buttons */
+    .risk-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .risk-btn {
+      border-radius: 16px;
+      border: 1px solid var(--gj-border-soft);
+      padding: 6px 10px;
+      font-size: 12px;
+      background: #020617;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--gj-grey-dark);
+    }
+
+    .risk-btn.selected,
+    .risk-btn:hover {
+      border-color: #F59E0B;
+      background: rgba(248, 165, 32, 0.14);
     }
 
     /* Results panel */
     .results-panel {
-      background: var(--gj-card-bg);
-      border-radius: 16px;
-      border: 1px solid var(--gj-border);
+      background: linear-gradient(145deg, #020617 0, #0f172a 40%, #020617 100%);
+      border-radius: 20px;
+      border: 1px solid var(--gj-border-soft);
       box-shadow: var(--gj-shadow-soft);
       padding: 14px 14px 16px;
-      height: 76vh;
-      max-height: 640px;
-      min-height: 480px;
+      height: 78vh;
+      max-height: 660px;
+      min-height: 500px;
       display: flex;
       flex-direction: column;
     }
@@ -386,6 +436,7 @@
     .results-title {
       font-size: 16px;
       font-weight: 600;
+      color: #F9FAFB;
     }
 
     .results-sub {
@@ -395,9 +446,9 @@
 
     .results-main {
       margin-top: 10px;
-      border-radius: 12px;
-      background: linear-gradient(90deg, #FFF6D8 0, #FFFFFF 80%);
-      border: 1px solid #FBD6CC;
+      border-radius: 14px;
+      background: radial-gradient(circle at top right, #1f2937 0, #020617 70%);
+      border: 1px solid rgba(251,214,204,0.18);
       padding: 10px 10px 12px;
     }
 
@@ -411,7 +462,7 @@
     .corpus-value {
       font-size: 22px;
       font-weight: 700;
-      color: var(--gj-content);
+      color: #FCD34D;
       margin-top: 4px;
     }
 
@@ -435,24 +486,25 @@
       width: 100%;
       height: 8px;
       border-radius: 999px;
-      background: #F3F3F3;
+      background: #020617;
       overflow: hidden;
+      border: 1px solid #111827;
     }
 
     .bar-inner {
       height: 100%;
       width: 0%;
-      background: linear-gradient(90deg, var(--gj-yellow) 0, var(--gj-teal) 100%);
+      background: linear-gradient(90deg, #FDE68A 0, #22C55E 50%, #16A34A 100%);
       transition: width 0.6s ease-out;
     }
 
     .score-pill {
       border-radius: 999px;
-      border: 1px solid var(--gj-teal);
+      border: 1px solid #22C55E;
       padding: 2px 6px;
       font-size: 11px;
-      color: var(--gj-teal);
-      background: #FFFFFF;
+      color: #BBF7D0;
+      background: rgba(22,163,74,0.18);
     }
 
     .secondary-grid {
@@ -470,8 +522,8 @@
 
     .secondary-card {
       border-radius: 10px;
-      border: 1px solid var(--gj-border);
-      background: #FFFFFF;
+      border: 1px solid var(--gj-border-soft);
+      background: #020617;
       padding: 8px;
     }
 
@@ -486,7 +538,7 @@
     .secondary-value {
       font-size: 15px;
       font-weight: 600;
-      color: var(--gj-content);
+      color: #F9FAFB;
     }
 
     .secondary-caption {
@@ -498,8 +550,8 @@
     .mf-block {
       margin-top: 10px;
       border-radius: 12px;
-      background: #F6FDFB;
-      border: 1px solid #B6E5DB;
+      background: #020617;
+      border: 1px solid #064E3B;
       padding: 8px;
     }
 
@@ -507,7 +559,7 @@
       font-size: 11px;
       text-transform: uppercase;
       letter-spacing: 0.13em;
-      color: var(--gj-teal);
+      color: #6EE7B7;
       margin-bottom: 4px;
     }
 
@@ -519,11 +571,11 @@
 
     .mf-chip {
       border-radius: 999px;
-      border: 1px solid var(--gj-teal);
+      border: 1px solid #22C55E;
       padding: 4px 8px;
       font-size: 11px;
-      background: #FFFFFF;
-      color: var(--gj-teal);
+      background: #020617;
+      color: #BBF7D0;
     }
 
     .mf-note {
@@ -536,7 +588,7 @@
       margin-top: 8px;
       border-radius: 10px;
       border: 1px dashed var(--gj-border-soft);
-      background: #FFFFFF;
+      background: #020617;
       padding: 8px 8px;
       display: flex;
       align-items: center;
@@ -548,8 +600,8 @@
       border-radius: 999px;
       padding: 4px 10px;
       font-size: 11px;
-      background: var(--gj-yellow-soft);
-      color: var(--gj-content);
+      background: rgba(248, 165, 32, 0.18);
+      color: #FDE68A;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.12em;
@@ -566,8 +618,8 @@
     .delay-card {
       margin-top: 8px;
       border-radius: 10px;
-      border: 1px solid #FBD6CC;
-      background: #FFF7F4;
+      border: 1px solid rgba(248,165,32,0.4);
+      background: radial-gradient(circle at top left, #312E81 0, #020617 70%);
       padding: 8px;
     }
 
@@ -575,7 +627,7 @@
       margin-top: 4px;
       font-size: 13px;
       font-weight: 600;
-      color: var(--gj-error);
+      color: #FCA5A5;
     }
 
     .delay-caption {
@@ -594,9 +646,9 @@
     .btn-secondary {
       border-radius: 18px;
       padding: 7px 14px;
-      border: 1px solid var(--gj-teal);
-      background: #FFFFFF;
-      color: var(--gj-teal);
+      border: 1px solid #22C55E;
+      background: #020617;
+      color: #BBF7D0;
       font-size: 12px;
       font-weight: 600;
       cursor: pointer;
@@ -605,17 +657,25 @@
       gap: 6px;
     }
 
+    .btn-secondary:hover {
+      background: rgba(34,197,94,0.12);
+    }
+
     .btn-ghost {
       border-radius: 18px;
       padding: 7px 14px;
       border: 1px dashed var(--gj-border-soft);
-      background: #FFFFFF;
+      background: #020617;
       color: var(--gj-grey-dark);
       font-size: 12px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 6px;
+    }
+
+    .btn-ghost:hover {
+      background: #111827;
     }
 
     .results-footer {
@@ -633,6 +693,7 @@
       }
       body {
         background: #FFFFFF;
+        color: #000000;
       }
       .main {
         padding: 10px;
@@ -640,6 +701,22 @@
       .results-panel {
         height: auto;
         max-height: none;
+        background: #FFFFFF;
+        color: #000000;
+      }
+      .results-main,
+      .secondary-card,
+      .mf-block,
+      .badge-card,
+      .delay-card {
+        background: #FFFFFF;
+        border-color: #E5E7EB;
+        color: #000000;
+      }
+      .corpus-value,
+      .secondary-value,
+      .badge-text {
+        color: #000000;
       }
     }
   </style>
@@ -653,7 +730,7 @@
     </div>
     <div class="header-cta">
       <span>Mutual Fund · SIP · Financial Independence</span>
-      <button class="btn-header" type="button">Request a call back</button>
+      <button class="btn-header" type="button">📞 Request a call back</button>
     </div>
   </header>
 
@@ -666,7 +743,7 @@
             <div class="coach-avatar">🔥</div>
             <div class="coach-text-block">
               <span class="coach-name" id="coachName">FIRE Coach</span>
-              <span class="coach-sub">Let’s chat and build your FIRE snapshot in 2 minutes.</span>
+              <span class="coach-sub">Let’s chat and build your FIRE snapshot in under 2 minutes.</span>
             </div>
           </div>
           <div class="chat-body" id="chatBody">
@@ -690,7 +767,7 @@
             <div class="corpus-label">Estimated FIRE corpus (freedom number)</div>
             <div class="corpus-value" id="corpusOutput">₹ —</div>
             <div class="corpus-caption" id="corpusNote">
-              We’ll estimate your “freedom number” after you share your expenses, age and FIRE lifestyle.
+              We’ll estimate your “freedom number” after you share your lifestyle, expenses and FIRE age.
             </div>
 
             <div class="bar-wrap">
@@ -716,7 +793,7 @@
               <div class="secondary-title">Years to FIRE</div>
               <div class="secondary-value" id="yearsToFireOutput">— yrs</div>
               <div class="secondary-caption" id="yearsNote">
-                This is simply the difference between your target FIRE age and current age.
+                This is simply the difference between your target FIRE age and your current age.
               </div>
             </div>
           </div>
@@ -724,7 +801,7 @@
           <div class="mf-block">
             <div class="mf-tag">Indicative mutual fund category mix</div>
             <div class="secondary-caption" id="mfMixText">
-              After your FIRE snapshot is ready, I’ll suggest an example mix of equity, hybrid and debt categories based on your time to FIRE.
+              After your FIRE snapshot is ready, I’ll suggest an example mix of equity, hybrid and debt categories based on your time to FIRE and risk style.
             </div>
             <div class="mf-row" id="mfChipsRow" style="display:none;"></div>
             <div class="mf-note">
@@ -752,7 +829,7 @@
             </div>
             <div class="delay-amount" id="delayAmount">₹ — potential value you might leave on the table.</div>
             <div class="delay-caption">
-              This is a simplified illustration assuming long-term equity mutual fund returns.
+              This is a simplified illustration using long-term equity mutual fund return assumptions.
               Actual outcomes will differ, but it shows why starting early often helps.
             </div>
           </div>
@@ -765,7 +842,7 @@
           <div class="results-footer">
             <p>
               This FIRE readiness chat is for educational and engagement purposes only. It uses simple assumptions
-              to help you visualise mutual fund SIPs and long-term compounding.
+              to help you visualise mutual fund SIPs and long-term compounding in an Indian context.
             </p>
             <p>
               It is not investment advice or a recommendation for any specific product. Please consult your Relationship
@@ -794,26 +871,29 @@
     email: "",
     mobile: "",
     monthlyExpense: 60000,
-    age: 35,
+    age: 30,
     fireAge: 55,
     lifestyleFactor: 1,
     lifestyleLabel: "Regular FIRE",
     currentCorpus: 0,
+    riskStyle: "Balanced",
     score: 0,
     corpus: 0,
     sip: 0,
-    yearsToFire: 20
+    yearsToFire: 25
   };
 
   let currentStep = 0;
   const steps = [
     "askName",
-    "askContact",
+    "askEmail",
+    "askMobile",
+    "askLifestyle",
+    "askExpense",
     "askAge",
     "askFireAge",
-    "askExpense",
-    "askLifestyle",
     "askCorpus",
+    "askRiskStyle",
     "showSummary"
   ];
 
@@ -847,10 +927,10 @@
   const copySummaryBtn = document.getElementById("copySummaryBtn");
 
   // ----- Chat rendering -----
-  function appendAssistant(text) {
+  function appendAssistant(html) {
     const bubble = document.createElement("div");
     bubble.className = "bubble bubble-assistant";
-    bubble.innerHTML = text;
+    bubble.innerHTML = html;
     chatBody.appendChild(bubble);
     chatBody.scrollTop = chatBody.scrollHeight;
   }
@@ -877,12 +957,13 @@
   });
   updateDelayUI();
 
-  // Steps
+  // ---- Conversation Steps ----
   function renderStep() {
     clearFooter();
     const step = steps[currentStep];
+
     if (step === "askName") {
-      appendAssistant("<span class='bubble-label'>Let’s start</span>Hi, I’m your FIRE Coach. What’s your <span class='bubble-strong'>name</span>?");
+      appendAssistant("<span class='bubble-label'>Let’s start</span>👋 Hey! I’m your <span class='bubble-strong'>FIRE Coach</span>.<br/>I help you figure out <span class='bubble-strong'>when you can stop working for money</span>.<br/><br/>What should I call you?");
       const wrapper = document.createElement("div");
       wrapper.className = "chat-input-area";
       wrapper.innerHTML = `
@@ -894,13 +975,16 @@
         <div class="error-text" id="nameError" style="display:none;">Please enter your name.</div>
       `;
       chatFooter.appendChild(wrapper);
-      document.getElementById("nameInput").focus();
+      const nameInput = document.getElementById("nameInput");
+      const nameError = document.getElementById("nameError");
+      nameInput.focus();
       document.getElementById("btnName").onclick = () => {
-        const val = document.getElementById("nameInput").value.trim();
+        const val = nameInput.value.trim();
         if (!val) {
-          document.getElementById("nameError").style.display = "block";
+          nameError.style.display = "block";
           return;
         }
+        nameError.style.display = "none";
         state.name = val;
         coachNameEl.textContent = "FIRE Coach for " + val.split(" ")[0];
         resultsTitle.textContent = val + ", here’s your FIRE snapshot";
@@ -909,87 +993,105 @@
         currentStep++;
         renderStep();
       };
-    } else if (step === "askContact") {
-      appendAssistant("Nice to meet you, <span class='bubble-strong'>" + state.name + "</span> 🙌<br/>If you’d like, you can share your email and mobile so an RM can help you later. This is optional.");
+    }
+
+    else if (step === "askEmail") {
+      appendAssistant("✨ Nice to meet you, <span class='bubble-strong'>" + state.name + "</span>!<br/><br/>Where should I send your <span class='bubble-strong'>Freedom Report + FIRE Score</span>?<br/><br/>📧 Please enter your email.");
       const wrapper = document.createElement("div");
       wrapper.className = "chat-input-area";
       wrapper.innerHTML = `
-        <div class="field-label">Contact (optional)</div>
-        <div class="input-row" style="flex-wrap:wrap;">
-          <input type="email" id="emailInput" class="chat-input" placeholder="Email (optional)" />
-          <input type="tel" id="mobileInput" class="chat-input" placeholder="Mobile (optional)" />
-          <button class="btn-next" id="btnContact">Next →</button>
+        <div class="field-label">Email address</div>
+        <div class="input-row">
+          <input type="email" id="emailInput" class="chat-input" placeholder="name@example.com" />
+          <button class="btn-next" id="btnEmail">Next →</button>
         </div>
+        <div class="error-text" id="emailError" style="display:none;">Please enter a valid email address.</div>
       `;
       chatFooter.appendChild(wrapper);
-      document.getElementById("emailInput").focus();
-      document.getElementById("btnContact").onclick = () => {
-        state.email = document.getElementById("emailInput").value.trim();
-        state.mobile = document.getElementById("mobileInput").value.trim();
-        let summary = "";
-        if (state.email) summary += "Email: " + state.email;
-        if (state.mobile) summary += (summary ? " · " : "") + "Mobile: " + state.mobile;
-        if (!summary) summary = "(Skipped contact details)";
-        appendUser(summary);
+      const emailInput = document.getElementById("emailInput");
+      const emailError = document.getElementById("emailError");
+      emailInput.focus();
+      document.getElementById("btnEmail").onclick = () => {
+        const val = emailInput.value.trim();
+        const valid = !val || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+        if (!valid) {
+          emailError.style.display = "block";
+          return;
+        }
+        emailError.style.display = "none";
+        state.email = val;
+        appendUser(val || "(Skipped email)");
         currentStep++;
         renderStep();
       };
-    } else if (step === "askAge") {
-      appendAssistant("Great. To understand your timeline, what is your <span class='bubble-strong'>current age</span>?");
+    }
+
+    else if (step === "askMobile") {
+      appendAssistant("Got it ✔️<br/><br/>📱 And your mobile number?<br/><span class='tiny-caption'>Only for sending your PDF report & for an RM to help you if you want. No spam.</span>");
       const wrapper = document.createElement("div");
       wrapper.className = "chat-input-area";
       wrapper.innerHTML = `
-        <div class="field-label">Slide to set your age</div>
-        <div class="slider-row">
-          <input id="ageSlider" type="range" min="22" max="55" value="${state.age}" />
-          <div class="slider-pill" id="ageValue">${state.age} years</div>
+        <div class="field-label">Mobile number (optional)</div>
+        <div class="input-row">
+          <input type="tel" id="mobileInput" class="chat-input" placeholder="10-digit mobile number" />
+          <button class="btn-next" id="btnMobile">Next →</button>
         </div>
-        <div class="tiny-caption">You can adjust this later if needed.</div>
+        <div class="error-text" id="mobileError" style="display:none;">Please enter a valid 10-digit mobile number or leave blank.</div>
+      `;
+      chatFooter.appendChild(wrapper);
+      const mobileInput = document.getElementById("mobileInput");
+      const mobileError = document.getElementById("mobileError");
+      mobileInput.focus();
+      document.getElementById("btnMobile").onclick = () => {
+        const val = mobileInput.value.trim();
+        let valid = true;
+        if (val && !/^\d{10}$/.test(val)) valid = false;
+        if (!valid) {
+          mobileError.style.display = "block";
+          return;
+        }
+        mobileError.style.display = "none";
+        state.mobile = val;
+        appendUser(val || "(Skipped mobile)");
+        currentStep++;
+        renderStep();
+      };
+    }
+
+    else if (step === "askLifestyle") {
+      appendAssistant("Awesome, " + state.name.split(" ")[0] + "! 🚀<br/><br/>At retirement, what kind of <span class='bubble-strong'>lifestyle</span> do you dream of?");
+      const wrapper = document.createElement("div");
+      wrapper.className = "chat-input-area";
+      wrapper.innerHTML = `
+        <div class="field-label">Choose a lifestyle</div>
+        <div class="lifestyle-row">
+          <button type="button" class="lifestyle-btn" data-factor="0.9" data-label="Lean FIRE">🧘 Lean FIRE</button>
+          <button type="button" class="lifestyle-btn selected" data-factor="1" data-label="Regular FIRE">🏡 Regular FIRE</button>
+          <button type="button" class="lifestyle-btn" data-factor="1.2" data-label="Fat FIRE">💎 Fat FIRE</button>
+        </div>
         <div style="margin-top:6px;">
-          <button class="btn-next" id="btnAge">Next →</button>
+          <button class="btn-next" id="btnLifestyle">Next →</button>
         </div>
       `;
       chatFooter.appendChild(wrapper);
-      const ageSlider = document.getElementById("ageSlider");
-      const ageValue = document.getElementById("ageValue");
-      ageSlider.addEventListener("input", () => {
-        ageValue.textContent = ageSlider.value + " years";
+      const buttons = wrapper.querySelectorAll(".lifestyle-btn");
+      buttons.forEach(btn => {
+        btn.addEventListener("click", () => {
+          buttons.forEach(b => b.classList.remove("selected"));
+          btn.classList.add("selected");
+          state.lifestyleFactor = parseFloat(btn.getAttribute("data-factor")) || 1;
+          state.lifestyleLabel = btn.getAttribute("data-label") || "Regular FIRE";
+        });
       });
-      document.getElementById("btnAge").onclick = () => {
-        state.age = parseInt(ageSlider.value, 10) || 30;
-        appendUser(state.age + " years");
+      document.getElementById("btnLifestyle").onclick = () => {
+        appendUser(state.lifestyleLabel);
         currentStep++;
         renderStep();
       };
-    } else if (step === "askFireAge") {
-      appendAssistant("And at what age would you like <span class='bubble-strong'>work to be optional</span>? (Your target FIRE age)");
-      const wrapper = document.createElement("div");
-      wrapper.className = "chat-input-area";
-      wrapper.innerHTML = `
-        <div class="field-label">Slide to set your FIRE age</div>
-        <div class="slider-row">
-          <input id="fireAgeSlider" type="range" min="40" max="65" value="${state.fireAge}" />
-          <div class="slider-pill" id="fireAgeValue">${state.fireAge} years</div>
-        </div>
-        <div class="tiny-caption">This helps us calculate how many years you have to build your corpus.</div>
-        <div style="margin-top:6px;">
-          <button class="btn-next" id="btnFireAge">Next →</button>
-        </div>
-      `;
-      chatFooter.appendChild(wrapper);
-      const fireAgeSlider = document.getElementById("fireAgeSlider");
-      const fireAgeValue = document.getElementById("fireAgeValue");
-      fireAgeSlider.addEventListener("input", () => {
-        fireAgeValue.textContent = fireAgeSlider.value + " years";
-      });
-      document.getElementById("btnFireAge").onclick = () => {
-        state.fireAge = parseInt(fireAgeSlider.value, 10) || 55;
-        appendUser(state.fireAge + " years");
-        currentStep++;
-        renderStep();
-      };
-    } else if (step === "askExpense") {
-      appendAssistant("Now, roughly how much do you spend in a month on your lifestyle – <span class='bubble-strong'>monthly living expenses</span>?");
+    }
+
+    else if (step === "askExpense") {
+      appendAssistant("Now, how much do you currently spend per month on your <span class='bubble-strong'>living expenses</span>?<br/>This includes rent/EMI, groceries, school fees, utilities, lifestyle etc.");
       const wrapper = document.createElement("div");
       wrapper.className = "chat-input-area";
       wrapper.innerHTML = `
@@ -1023,92 +1125,221 @@
         currentStep++;
         renderStep();
       };
-    } else if (step === "askLifestyle") {
-      appendAssistant("How would you describe your preferred <span class='bubble-strong'>FIRE lifestyle</span>?");
+    }
+
+    else if (step === "askAge") {
+      appendAssistant("Got it 💸<br/><br/>What’s your <span class='bubble-strong'>age today</span>?");
       const wrapper = document.createElement("div");
       wrapper.className = "chat-input-area";
       wrapper.innerHTML = `
-        <div class="field-label">Choose a lifestyle</div>
-        <div class="lifestyle-row">
-          <button type="button" class="lifestyle-btn" data-factor="0.9" data-label="Lean FIRE">🧘 Lean FIRE</button>
-          <button type="button" class="lifestyle-btn selected" data-factor="1" data-label="Regular FIRE">🏡 Regular FIRE</button>
-          <button type="button" class="lifestyle-btn" data-factor="1.2" data-label="Fat FIRE">💎 Fat FIRE</button>
+        <div class="field-label">Slide to set your age</div>
+        <div class="slider-row">
+          <input id="ageSlider" type="range" min="22" max="55" value="${state.age}" />
+          <div class="slider-pill" id="ageValue">${state.age} years</div>
         </div>
+        <div class="tiny-caption">You can adjust this later if needed.</div>
         <div style="margin-top:6px;">
-          <button class="btn-next" id="btnLifestyle">Next →</button>
+          <button class="btn-next" id="btnAge">Next →</button>
         </div>
       `;
       chatFooter.appendChild(wrapper);
-      const buttons = wrapper.querySelectorAll(".lifestyle-btn");
-      buttons.forEach(btn => {
-        btn.addEventListener("click", () => {
-          buttons.forEach(b => b.classList.remove("selected"));
-          btn.classList.add("selected");
-          state.lifestyleFactor = parseFloat(btn.getAttribute("data-factor")) || 1;
-          state.lifestyleLabel = btn.getAttribute("data-label") || "Regular FIRE";
-        });
+      const ageSlider = document.getElementById("ageSlider");
+      const ageValue = document.getElementById("ageValue");
+      ageSlider.addEventListener("input", () => {
+        ageValue.textContent = ageSlider.value + " years";
       });
-      document.getElementById("btnLifestyle").onclick = () => {
-        appendUser(state.lifestyleLabel);
+      document.getElementById("btnAge").onclick = () => {
+        state.age = parseInt(ageSlider.value, 10) || 30;
+        appendUser(state.age + " years");
         currentStep++;
         renderStep();
       };
-    } else if (step === "askCorpus") {
-      appendAssistant("Last one – do you already have any <span class='bubble-strong'>investments earmarked for retirement</span>? You can share an approximate amount.");
+    }
+
+    else if (step === "askFireAge") {
+      appendAssistant("And at what age would you like <span class='bubble-strong'>work to be optional</span>?<br/>That’s your target FIRE age.");
+      const wrapper = document.createElement("div");
+      wrapper.className = "chat-input-area";
+      wrapper.innerHTML = `
+        <div class="field-label">Slide to set your FIRE age</div>
+        <div class="slider-row">
+          <input id="fireAgeSlider" type="range" min="40" max="65" value="${state.fireAge}" />
+          <div class="slider-pill" id="fireAgeValue">${state.fireAge} years</div>
+        </div>
+        <div class="tiny-caption">More years = more time for your SIPs to compound.</div>
+        <div style="margin-top:6px;">
+          <button class="btn-next" id="btnFireAge">Next →</button>
+        </div>
+      `;
+      chatFooter.appendChild(wrapper);
+      const fireAgeSlider = document.getElementById("fireAgeSlider");
+      const fireAgeValue = document.getElementById("fireAgeValue");
+      fireAgeSlider.addEventListener("input", () => {
+        fireAgeValue.textContent = fireAgeSlider.value + " years";
+      });
+      document.getElementById("btnFireAge").onclick = () => {
+        state.fireAge = parseInt(fireAgeSlider.value, 10) || 55;
+        appendUser(state.fireAge + " years");
+        currentStep++;
+        renderStep();
+      };
+    }
+
+    else if (step === "askCorpus") {
+      appendAssistant("Last factual bit… 😊<br/><br/>Roughly how much have you already saved <span class='bubble-strong'>specifically for retirement</span>?<br/>You can leave this as 0 if you’re just starting.");
       const wrapper = document.createElement("div");
       wrapper.className = "chat-input-area";
       wrapper.innerHTML = `
         <div class="field-label">Approximate corpus set aside for retirement (optional)</div>
         <div class="input-row">
           <input type="number" id="corpusInput" class="chat-input" placeholder="Eg: 500000 for ₹5,00,000" min="0" />
-          <button class="btn-next" id="btnCorpus">See my FIRE snapshot →</button>
+          <button class="btn-next" id="btnCorpus">Next →</button>
         </div>
-        <div class="tiny-caption">If you’re just starting, you can leave this as 0.</div>
+        <div class="tiny-caption">If you’re just starting, you can leave this blank.</div>
       `;
       chatFooter.appendChild(wrapper);
-      document.getElementById("corpusInput").focus();
+      const corpusInput = document.getElementById("corpusInput");
+      corpusInput.focus();
       document.getElementById("btnCorpus").onclick = () => {
-        const val = document.getElementById("corpusInput").value.trim();
+        const val = corpusInput.value.trim();
         state.currentCorpus = parseFloat(val || "0") || 0;
         appendUser(state.currentCorpus > 0 ? formatINR(state.currentCorpus) : "No corpus yet / starting now");
         currentStep++;
         renderStep();
       };
-    } else if (step === "showSummary") {
-      appendAssistant("Perfect. Based on what you shared, here’s your FIRE snapshot on the right – including your freedom number, indicative SIP and a sample mutual fund category mix.");
+    }
+
+    else if (step === "askRiskStyle") {
+      appendAssistant("Before I show your FIRE Score…<br/><br/>Do you want your plan to feel more <span class='bubble-strong'>cautious, balanced or bold</span>?");
+      const wrapper = document.createElement("div");
+      wrapper.className = "chat-input-area";
+      wrapper.innerHTML = `
+        <div class="field-label">Pick a style</div>
+        <div class="risk-row">
+          <button type="button" class="risk-btn" data-risk="Cautious">🛡️ Cautious</button>
+          <button type="button" class="risk-btn selected" data-risk="Balanced">⚖️ Balanced</button>
+          <button type="button" class="risk-btn" data-risk="Bold">🚀 Bold</button>
+        </div>
+        <div style="margin-top:6px;">
+          <button class="btn-next" id="btnRisk">See my FIRE Score →</button>
+        </div>
+      `;
+      chatFooter.appendChild(wrapper);
+      const buttons = wrapper.querySelectorAll(".risk-btn");
+      buttons.forEach(btn => {
+        btn.addEventListener("click", () => {
+          buttons.forEach(b => b.classList.remove("selected"));
+          btn.classList.add("selected");
+          state.riskStyle = btn.getAttribute("data-risk") || "Balanced";
+        });
+      });
+      document.getElementById("btnRisk").onclick = () => {
+        appendUser(state.riskStyle + " plan");
+        currentStep++;
+        renderStep();
+      };
+    }
+
+    else if (step === "showSummary") {
+      appendAssistant("🔥 Ready, <span class='bubble-strong'>" + state.name.split(" ")[0] + "</span>?<br/>I’m calculating your FIRE Score and SIP now…");
       clearFooter();
-      computeAndRender();
+      // Simulate small delay
+      setTimeout(() => {
+        computeAndRender();
+        appendAssistant("🎯 Here’s your FIRE snapshot on the right – including your <span class='bubble-strong'>Score, Freedom Number, SIP</span> and a sample mutual fund category mix.<br/><br/>You can also drag the <span class='bubble-strong'>delay slider</span> on the right to see what happens if you postpone starting your SIP.");
+      }, 900);
     }
   }
 
-  // MF mix suggestion
-  function getMfMix(yearsToFIRE) {
+  // MF mix suggestion based on years + risk
+  function getMfMix(yearsToFIRE, riskStyle) {
+    const risk = riskStyle || "Balanced";
     if (yearsToFIRE >= 20) {
-      return {
-        text: "You have a long runway. Typically, a higher equity allocation with some hybrid exposure is used for growth.",
-        chips: [
-          "Equity: 80% (Large / Flexi / Index)",
-          "Hybrid / Balanced Advantage: 20%"
-        ]
-      };
+      if (risk === "Bold") {
+        return {
+          text: "You have a long runway and a bold style. Many investors in this zone keep a high equity tilt with some space for thematic or international funds.",
+          chips: [
+            "Equity: 85% (Flexi / Mid / Index)",
+            "International / Thematic: 10%",
+            "Hybrid / Balanced Advantage: 5%"
+          ]
+        };
+      } else if (risk === "Cautious") {
+        return {
+          text: "Long time horizon with a cautious style – you can still use equity for growth, but with a meaningful hybrid allocation.",
+          chips: [
+            "Equity: 65% (Large / Flexi / Index)",
+            "Hybrid / Balanced Advantage: 25%",
+            "Short Duration Debt: 10%"
+          ]
+        };
+      } else {
+        return {
+          text: "You have a long runway. A higher equity allocation with some hybrid exposure is a common approach for long-term growth.",
+          chips: [
+            "Equity: 80% (Large / Flexi / Index)",
+            "Hybrid / Balanced Advantage: 20%"
+          ]
+        };
+      }
     } else if (yearsToFIRE >= 10) {
-      return {
-        text: "A balanced mix can work – equity for growth, hybrid for stability and a slice of short-duration debt.",
-        chips: [
-          "Equity: 60%",
-          "Hybrid / Balanced Advantage: 30%",
-          "Short Duration / Corporate Bond: 10%"
-        ]
-      };
+      if (risk === "Bold") {
+        return {
+          text: "Balanced horizon with a bold style – still equity-focused, but with some hybrid and debt for stability.",
+          chips: [
+            "Equity: 70%",
+            "Hybrid / Balanced Advantage: 20%",
+            "Short Duration / Corporate Bond: 10%"
+          ]
+        };
+      } else if (risk === "Cautious") {
+        return {
+          text: "With a cautious style, you may want more stability – a stronger hybrid + debt allocation can help smooth the ride.",
+          chips: [
+            "Equity: 50%",
+            "Hybrid / Balanced Advantage: 30%",
+            "Short Duration / Corporate Bond: 20%"
+          ]
+        };
+      } else {
+        return {
+          text: "A balanced mix can work well – equity for growth, hybrid for stability and a slice of short-duration debt.",
+          chips: [
+            "Equity: 60%",
+            "Hybrid / Balanced Advantage: 30%",
+            "Short Duration / Corporate Bond: 10%"
+          ]
+        };
+      }
     } else {
-      return {
-        text: "Closer to FIRE age, many investors tilt more to hybrid and debt to moderate risk.",
-        chips: [
-          "Equity: 40%",
-          "Hybrid / Balanced Advantage: 40%",
-          "Short Duration / Corporate Bond: 20%"
-        ]
-      };
+      if (risk === "Bold") {
+        return {
+          text: "You’re closer to your FIRE age, but still prefer a bold stance. Many investors keep a meaningful equity portion but lean more into hybrid and short-duration debt.",
+          chips: [
+            "Equity: 50%",
+            "Hybrid / Balanced Advantage: 30%",
+            "Short Duration / Corporate Bond: 20%"
+          ]
+        };
+      } else if (risk === "Cautious") {
+        return {
+          text: "Closer to FIRE age with a cautious style – typically more hybrid and debt, with limited equity exposure.",
+          chips: [
+            "Equity: 30%",
+            "Hybrid / Balanced Advantage: 40%",
+            "Short Duration / Corporate Bond: 30%"
+          ]
+        };
+      } else {
+        return {
+          text: "Closer to FIRE age, many investors tilt more to hybrid and debt to moderate risk and volatility.",
+          chips: [
+            "Equity: 40%",
+            "Hybrid / Balanced Advantage: 40%",
+            "Short Duration / Corporate Bond: 20%"
+          ]
+        };
+      }
     }
   }
 
@@ -1116,13 +1347,13 @@
   function computeAndRender() {
     const yearlyExpense = state.monthlyExpense * 12;
     const yearsToFIRE = Math.max(1, state.fireAge - state.age);
-    const corpus = yearlyExpense * 25 * state.lifestyleFactor;
+    const corpus = yearlyExpense * 25 * state.lifestyleFactor; // 25x rule
 
     const readiness = corpus > 0 ? clamp(state.currentCorpus / corpus, 0, 1) : 0;
     const yearsFactor = clamp(yearsToFIRE / 35, 0, 1);
     const score = Math.round(readiness * 70 + yearsFactor * 30);
 
-    const r = 0.11 / 12;
+    const r = 0.11 / 12; // 11% annual in mutual funds (approx, illustrative)
     const n = yearsToFIRE * 12;
     let sip = 0;
     if (corpus > state.currentCorpus && n > 0 && r > 0) {
@@ -1156,11 +1387,16 @@
         ? "A steady SIP of this amount into suitable mutual funds could help you move towards this FIRE corpus over time."
         : "Try adjusting your FIRE age or expenses to see an indicative SIP.";
 
+    // Personalise summary title if not already
+    if (state.name) {
+      resultsTitle.textContent = state.name + ", here’s your FIRE snapshot";
+    }
+
     // Badge
     updateBadge(state.score);
 
     // MF mix
-    const mix = getMfMix(yearsToFIRE);
+    const mix = getMfMix(yearsToFIRE, state.riskStyle);
     mfMixText.textContent = mix.text;
     mfChipsRow.innerHTML = "";
     mix.chips.forEach(label => {
