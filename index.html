@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Geojit FIRE Coach – Mutual Fund SIP Readiness Chat</title>
+  <title>Geojit FIRE Coach – Chat-based FIRE Readiness</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <!-- Open Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -10,15 +10,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
+      /* Base (dark) palette */
       --gj-teal: #07877B;
       --gj-teal-dark: #05645c;
       --gj-yellow: #F5CF47;
       --gj-yellow-soft: #F6D970;
       --gj-content: #E5E7EB;
-      --gj-body-bg: #020617; /* dark */
-      --gj-card-bg: #020617; /* chat background */
-      --gj-panel-bg: #0f172a; /* right panel dark slate */
-      --gj-panel-alt: #111827;
+      --gj-body-bg: radial-gradient(circle at top, #0f172a 0, #020617 45%, #000000 100%);
+      --gj-card-bg: #020617;
+      --gj-panel-bg: #020617;
+      --gj-panel-alt: #0f172a;
       --gj-border: #1f2937;
       --gj-border-soft: #374151;
       --gj-muted: #9CA3AF;
@@ -27,6 +28,49 @@
       --gj-grey-dark: #E5E7EB;
       --gj-shadow-soft: 0 8px 18px rgba(0,0,0,0.45);
       --gj-shadow-strong: 0 14px 32px rgba(0,0,0,0.6);
+      --gj-bubble-assistant-bg: rgba(15,23,42,0.96);
+      --gj-bubble-assistant-border: #374151;
+      --gj-bubble-user-bg: linear-gradient(135deg, #22C55E 0, #16A34A 40%, #166534 100%);
+      --gj-bubble-user-color: #ECFDF5;
+      --gj-chat-body-bg: radial-gradient(circle at top, #020617 0, #020617 70%);
+      --gj-chat-panel-bg: radial-gradient(circle at top left, #111827 0, #020617 60%);
+      --gj-results-bg: linear-gradient(145deg, #020617 0, #0f172a 40%, #020617 100%);
+      --gj-results-main-bg: radial-gradient(circle at top right, #1f2937 0, #020617 70%);
+      --gj-mf-bg: #020617;
+      --gj-badge-bg: #020617;
+      --gj-delay-bg: radial-gradient(circle at top left, #312E81 0, #020617 70%);
+      --gj-bar-bg: #020617;
+      --gj-bar-fill: linear-gradient(90deg, #FDE68A 0, #22C55E 50%, #16A34A 100%);
+    }
+
+    /* Light theme overrides */
+    body.light-theme {
+      --gj-content: #111827;
+      --gj-body-bg: radial-gradient(circle at top, #E5F4F2 0, #F3F4F6 40%, #E5E7EB 100%);
+      --gj-card-bg: #FFFFFF;
+      --gj-panel-bg: #FFFFFF;
+      --gj-panel-alt: #F9FAFB;
+      --gj-border: #E5E7EB;
+      --gj-border-soft: #D1D5DB;
+      --gj-muted: #6B7280;
+      --gj-error: #CF3974;
+      --gj-grey-light: #F9FAFB;
+      --gj-grey-dark: #111827;
+      --gj-shadow-soft: 0 12px 24px rgba(15,23,42,0.08);
+      --gj-shadow-strong: 0 16px 32px rgba(15,23,42,0.12);
+      --gj-bubble-assistant-bg: #FFFFFF;
+      --gj-bubble-assistant-border: #E5E7EB;
+      --gj-bubble-user-bg: linear-gradient(135deg, #22C55E 0, #16A34A 40%, #15803D 100%);
+      --gj-bubble-user-color: #ECFDF5;
+      --gj-chat-body-bg: linear-gradient(180deg, #F9FAFB 0, #EFF6FF 60%, #FFFFFF 100%);
+      --gj-chat-panel-bg: radial-gradient(circle at top left, #FFFFFF 0, #EFF6FF 60%);
+      --gj-results-bg: #FFFFFF;
+      --gj-results-main-bg: linear-gradient(145deg, #FFFBEB 0, #FEF3C7 50%, #FFFFFF 100%);
+      --gj-mf-bg: #F0FDF4;
+      --gj-badge-bg: #F9FAFB;
+      --gj-delay-bg: linear-gradient(135deg, #EFF6FF 0, #EEF2FF 40%, #FFFFFF 100%);
+      --gj-bar-bg: #E5E7EB;
+      --gj-bar-fill: linear-gradient(90deg, #FACC15 0, #22C55E 50%, #16A34A 100%);
     }
 
     * {
@@ -36,14 +80,29 @@
       font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
+    /* Copy protection: disable selection globally */
     body {
-      background: radial-gradient(circle at top, #0f172a 0, #020617 45%, #000000 100%);
+      background: var(--gj-body-bg);
       color: var(--gj-content);
       min-height: 100vh;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    /* But allow selecting/typing inside inputs & buttons */
+    input, textarea, button {
+      -webkit-user-select: text;
+      -moz-user-select: text;
+      -ms-user-select: text;
+      user-select: text;
     }
 
     a { color: var(--gj-yellow-soft); text-decoration: none; }
     a:hover { text-decoration: underline; }
+
+    body.light-theme a { color: var(--gj-teal); }
 
     .shell {
       display: flex;
@@ -65,6 +124,16 @@
       top: 0;
       z-index: 10;
     }
+    body.light-theme .header {
+      background: rgba(255,255,255,0.95);
+      box-shadow: 0 4px 16px rgba(15,23,42,0.06);
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
     .logo-wrap {
       display: flex;
@@ -85,13 +154,24 @@
       position: absolute;
       inset: 0;
       background: linear-gradient(120deg, #FFFFFF 0, #FFFFFF 40%, transparent 70%);
-      opacity: 0.12;
+      opacity: 0.18;
     }
 
     .logo-text {
       font-size: 17px;
       font-weight: 700;
       color: #F9FAFB;
+    }
+    body.light-theme .logo-text {
+      color: #0F172A;
+    }
+
+    .gt-container {
+      font-size: 11px;
+      margin-left: 10px;
+    }
+    .gt-container * {
+      font-family: 'Open Sans', system-ui, sans-serif !important;
     }
 
     .header-cta {
@@ -108,15 +188,36 @@
       border: 1px solid var(--gj-teal);
       background: rgba(7,135,123,0.14);
       color: #E5FFFB;
-      cursor: pointer;
+      cursor: not-allowed;
       font-size: 12px;
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      opacity: 0.5;
+      pointer-events: none;
+    }
+    body.light-theme .btn-header {
+      background: rgba(7,135,123,0.06);
+      color: var(--gj-teal);
     }
 
-    .btn-header:hover {
-      background: rgba(7,135,123,0.24);
+    .btn-toggle {
+      border-radius: 999px;
+      padding: 6px 14px;
+      border: 1px solid var(--gj-border-soft);
+      background: transparent;
+      color: var(--gj-grey-dark);
+      font-size: 12px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-toggle:hover {
+      background: rgba(148,163,184,0.15);
+    }
+    body.light-theme .btn-toggle:hover {
+      background: #E5E7EB;
     }
 
     /* Main layout */
@@ -144,7 +245,7 @@
 
     /* Chat panel */
     .chat-panel {
-      background: radial-gradient(circle at top left, #111827 0, #020617 60%);
+      background: var(--gj-chat-panel-bg);
       border-radius: 20px;
       border: 1px solid var(--gj-border-soft);
       box-shadow: var(--gj-shadow-soft);
@@ -161,6 +262,11 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      border-radius: 20px 20px 0 0;
+      background: #020617;
+    }
+    body.light-theme .chat-header {
+      background: #F9FAFB;
     }
 
     .coach-avatar {
@@ -186,6 +292,9 @@
       font-weight: 600;
       color: #F9FAFB;
     }
+    body.light-theme .coach-name {
+      color: #111827;
+    }
 
     .coach-sub {
       font-size: 11px;
@@ -196,7 +305,7 @@
       flex: 1;
       padding: 12px 12px 6px;
       overflow-y: auto;
-      background: radial-gradient(circle at top, #020617 0, #020617 70%);
+      background: var(--gj-chat-body-bg);
     }
 
     .chat-footer {
@@ -204,6 +313,9 @@
       padding: 8px 10px;
       background: #020617;
       border-radius: 0 0 20px 20px;
+    }
+    body.light-theme .chat-footer {
+      background: #F9FAFB;
     }
 
     .bubble {
@@ -215,20 +327,23 @@
       line-height: 1.4;
       box-shadow: 0 1px 4px rgba(0,0,0,0.45);
     }
+    body.light-theme .bubble {
+      box-shadow: 0 1px 4px rgba(148,163,184,0.35);
+    }
 
     .bubble-assistant {
-      background: rgba(15,23,42,0.96);
-      border: 1px solid var(--gj-border-soft);
+      background: var(--gj-bubble-assistant-bg);
+      border: 1px solid var(--gj-bubble-assistant-border);
       border-bottom-left-radius: 4px;
-      color: #E5E7EB;
+      color: var(--gj-grey-dark);
     }
 
     .bubble-user {
-      background: linear-gradient(135deg, #22C55E 0, #16A34A 40%, #166534 100%);
+      background: var(--gj-bubble-user-bg);
       border: 1px solid rgba(34,197,94,0.6);
       border-bottom-right-radius: 4px;
       margin-left: auto;
-      color: #ECFDF5;
+      color: var(--gj-bubble-user-color);
     }
 
     .bubble-label {
@@ -243,6 +358,9 @@
     .bubble-strong {
       font-weight: 600;
       color: #FACC15;
+    }
+    body.light-theme .bubble-strong {
+      color: #EA580C;
     }
 
     .chat-input-area {
@@ -271,6 +389,10 @@
       font-size: 13px;
       background: #020617;
       color: var(--gj-grey-dark);
+    }
+    body.light-theme .chat-input {
+      background: #FFFFFF;
+      color: #111827;
     }
 
     .chat-input::placeholder {
@@ -324,6 +446,9 @@
       background: #1F2937;
       outline: none;
     }
+    body.light-theme .slider-row input[type="range"] {
+      background: #E5E7EB;
+    }
 
     .slider-row input[type="range"]::-webkit-slider-thumb {
       -webkit-appearance: none;
@@ -335,6 +460,11 @@
       box-shadow: 0 0 10px rgba(34,197,94,0.9);
       cursor: pointer;
     }
+    body.light-theme .slider-row input[type="range"]::-webkit-slider-thumb {
+      border-color: #FFFFFF;
+      box-shadow: 0 0 10px rgba(34,197,94,0.7);
+    }
+
     .slider-row input[type="range"]::-moz-range-thumb {
       width: 16px;
       height: 16px;
@@ -353,6 +483,10 @@
       text-align: center;
       background: #020617;
       color: var(--gj-grey-dark);
+    }
+    body.light-theme .slider-pill {
+      background: #FFFFFF;
+      color: #111827;
     }
 
     .tiny-caption {
@@ -381,14 +515,21 @@
       gap: 6px;
       color: var(--gj-grey-dark);
     }
+    body.light-theme .lifestyle-btn {
+      background: #FFFFFF;
+      color: #111827;
+    }
 
     .lifestyle-btn.selected,
     .lifestyle-btn:hover {
       border-color: #22C55E;
       background: rgba(22,163,74,0.12);
     }
+    body.light-theme .lifestyle-btn.selected,
+    body.light-theme .lifestyle-btn:hover {
+      background: #DCFCE7;
+    }
 
-    /* Risk buttons */
     .risk-row {
       display: flex;
       flex-wrap: wrap;
@@ -408,16 +549,24 @@
       gap: 6px;
       color: var(--gj-grey-dark);
     }
+    body.light-theme .risk-btn {
+      background: #FFFFFF;
+      color: #111827;
+    }
 
     .risk-btn.selected,
     .risk-btn:hover {
       border-color: #F59E0B;
       background: rgba(248, 165, 32, 0.14);
     }
+    body.light-theme .risk-btn.selected,
+    body.light-theme .risk-btn:hover {
+      background: #FFFBEB;
+    }
 
     /* Results panel */
     .results-panel {
-      background: linear-gradient(145deg, #020617 0, #0f172a 40%, #020617 100%);
+      background: var(--gj-results-bg);
       border-radius: 20px;
       border: 1px solid var(--gj-border-soft);
       box-shadow: var(--gj-shadow-soft);
@@ -438,6 +587,9 @@
       font-weight: 600;
       color: #F9FAFB;
     }
+    body.light-theme .results-title {
+      color: #111827;
+    }
 
     .results-sub {
       font-size: 12px;
@@ -447,9 +599,12 @@
     .results-main {
       margin-top: 10px;
       border-radius: 14px;
-      background: radial-gradient(circle at top right, #1f2937 0, #020617 70%);
+      background: var(--gj-results-main-bg);
       border: 1px solid rgba(251,214,204,0.18);
       padding: 10px 10px 12px;
+    }
+    body.light-theme .results-main {
+      border-color: #FDE68A;
     }
 
     .corpus-label {
@@ -464,6 +619,9 @@
       font-weight: 700;
       color: #FCD34D;
       margin-top: 4px;
+    }
+    body.light-theme .corpus-value {
+      color: #92400E;
     }
 
     .corpus-caption {
@@ -486,15 +644,18 @@
       width: 100%;
       height: 8px;
       border-radius: 999px;
-      background: #020617;
+      background: var(--gj-bar-bg);
       overflow: hidden;
       border: 1px solid #111827;
+    }
+    body.light-theme .bar-outer {
+      border-color: transparent;
     }
 
     .bar-inner {
       height: 100%;
       width: 0%;
-      background: linear-gradient(90deg, #FDE68A 0, #22C55E 50%, #16A34A 100%);
+      background: var(--gj-bar-fill);
       transition: width 0.6s ease-out;
     }
 
@@ -505,6 +666,10 @@
       font-size: 11px;
       color: #BBF7D0;
       background: rgba(22,163,74,0.18);
+    }
+    body.light-theme .score-pill {
+      color: #166534;
+      background: #DCFCE7;
     }
 
     .secondary-grid {
@@ -526,6 +691,9 @@
       background: #020617;
       padding: 8px;
     }
+    body.light-theme .secondary-card {
+      background: #FFFFFF;
+    }
 
     .secondary-title {
       font-size: 11px;
@@ -540,6 +708,9 @@
       font-weight: 600;
       color: #F9FAFB;
     }
+    body.light-theme .secondary-value {
+      color: #111827;
+    }
 
     .secondary-caption {
       margin-top: 3px;
@@ -550,9 +721,12 @@
     .mf-block {
       margin-top: 10px;
       border-radius: 12px;
-      background: #020617;
+      background: var(--gj-mf-bg);
       border: 1px solid #064E3B;
       padding: 8px;
+    }
+    body.light-theme .mf-block {
+      border-color: #BBF7D0;
     }
 
     .mf-tag {
@@ -561,6 +735,9 @@
       letter-spacing: 0.13em;
       color: #6EE7B7;
       margin-bottom: 4px;
+    }
+    body.light-theme .mf-tag {
+      color: #15803D;
     }
 
     .mf-row {
@@ -577,6 +754,10 @@
       background: #020617;
       color: #BBF7D0;
     }
+    body.light-theme .mf-chip {
+      background: #FFFFFF;
+      color: #166534;
+    }
 
     .mf-note {
       margin-top: 5px;
@@ -588,7 +769,7 @@
       margin-top: 8px;
       border-radius: 10px;
       border: 1px dashed var(--gj-border-soft);
-      background: #020617;
+      background: var(--gj-badge-bg);
       padding: 8px 8px;
       display: flex;
       align-items: center;
@@ -609,6 +790,10 @@
       align-items: center;
       gap: 6px;
     }
+    body.light-theme .badge-pill {
+      background: #FEF3C7;
+      color: #92400E;
+    }
 
     .badge-text {
       font-size: 11px;
@@ -619,8 +804,11 @@
       margin-top: 8px;
       border-radius: 10px;
       border: 1px solid rgba(248,165,32,0.4);
-      background: radial-gradient(circle at top left, #312E81 0, #020617 70%);
+      background: var(--gj-delay-bg);
       padding: 8px;
+    }
+    body.light-theme .delay-card {
+      border-color: #FCD34D;
     }
 
     .delay-amount {
@@ -628,6 +816,9 @@
       font-size: 13px;
       font-weight: 600;
       color: #FCA5A5;
+    }
+    body.light-theme .delay-amount {
+      color: #B91C1C;
     }
 
     .delay-caption {
@@ -656,9 +847,15 @@
       align-items: center;
       gap: 6px;
     }
-
+    body.light-theme .btn-secondary {
+      background: #FFFFFF;
+      color: #166534;
+    }
     .btn-secondary:hover {
       background: rgba(34,197,94,0.12);
+    }
+    body.light-theme .btn-secondary:hover {
+      background: #DCFCE7;
     }
 
     .btn-ghost {
@@ -673,9 +870,15 @@
       align-items: center;
       gap: 6px;
     }
-
+    body.light-theme .btn-ghost {
+      background: #FFFFFF;
+      color: #374151;
+    }
     .btn-ghost:hover {
       background: #111827;
+    }
+    body.light-theme .btn-ghost:hover {
+      background: #F3F4F6;
     }
 
     .results-footer {
@@ -721,16 +924,20 @@
     }
   </style>
 </head>
-<body>
+<body class="theme-dark">
 <div class="shell">
   <header class="header">
-    <div class="logo-wrap">
-      <div class="logo-block"></div>
-      <div class="logo-text">FIRE Readiness Chat</div>
+    <div class="header-left">
+      <div class="logo-wrap">
+        <div class="logo-block"></div>
+        <div class="logo-text">FIRE Readiness Chat</div>
+      </div>
+      <div id="google_translate_element" class="gt-container"></div>
     </div>
     <div class="header-cta">
       <span>Mutual Fund · SIP · Financial Independence</span>
-      <button class="btn-header" type="button">📞 Request a call back</button>
+      <button class="btn-header" type="button" disabled>📞 Request a call back</button>
+      <button class="btn-toggle" id="themeToggle" type="button">🌙 Dark</button>
     </div>
   </header>
 
@@ -747,10 +954,10 @@
             </div>
           </div>
           <div class="chat-body" id="chatBody">
-            <!-- Bubbles will be injected here -->
+            <!-- Chat bubbles injected here -->
           </div>
           <div class="chat-footer" id="chatFooter">
-            <!-- Step-specific input will be injected here -->
+            <!-- Footer input area injected here -->
           </div>
         </section>
 
@@ -856,7 +1063,7 @@
 </div>
 
 <script>
-  // ---- Helpers ----
+  // --- Helper functions ---
   function formatINR(num) {
     if (!isFinite(num) || num <= 0) return "₹ —";
     return "₹" + Math.round(num).toLocaleString("en-IN");
@@ -865,7 +1072,7 @@
     return Math.min(max, Math.max(min, v));
   }
 
-  // ---- State ----
+  // --- State ---
   const state = {
     name: "",
     email: "",
@@ -897,7 +1104,7 @@
     "showSummary"
   ];
 
-  // ---- DOM refs ----
+  // --- DOM refs ---
   const chatBody = document.getElementById("chatBody");
   const chatFooter = document.getElementById("chatFooter");
   const coachNameEl = document.getElementById("coachName");
@@ -925,8 +1132,9 @@
 
   const whatsappBtn = document.getElementById("whatsappBtn");
   const copySummaryBtn = document.getElementById("copySummaryBtn");
+  const themeToggle = document.getElementById("themeToggle");
 
-  // ----- Chat rendering -----
+  // --- Chat rendering helpers ---
   function appendAssistant(html) {
     const bubble = document.createElement("div");
     bubble.className = "bubble bubble-assistant";
@@ -957,7 +1165,7 @@
   });
   updateDelayUI();
 
-  // ---- Conversation Steps ----
+  // --- Conversation flow ---
   function renderStep() {
     clearFooter();
     const step = steps[currentStep];
@@ -1243,7 +1451,6 @@
     else if (step === "showSummary") {
       appendAssistant("🔥 Ready, <span class='bubble-strong'>" + state.name.split(" ")[0] + "</span>?<br/>I’m calculating your FIRE Score and SIP now…");
       clearFooter();
-      // Simulate small delay
       setTimeout(() => {
         computeAndRender();
         appendAssistant("🎯 Here’s your FIRE snapshot on the right – including your <span class='bubble-strong'>Score, Freedom Number, SIP</span> and a sample mutual fund category mix.<br/><br/>You can also drag the <span class='bubble-strong'>delay slider</span> on the right to see what happens if you postpone starting your SIP.");
@@ -1251,7 +1458,7 @@
     }
   }
 
-  // MF mix suggestion based on years + risk
+  // --- MF mix suggestion ---
   function getMfMix(yearsToFIRE, riskStyle) {
     const risk = riskStyle || "Balanced";
     if (yearsToFIRE >= 20) {
@@ -1343,17 +1550,17 @@
     }
   }
 
-  // FIRE calculations
+  // --- FIRE calculations + UI update ---
   function computeAndRender() {
     const yearlyExpense = state.monthlyExpense * 12;
     const yearsToFIRE = Math.max(1, state.fireAge - state.age);
-    const corpus = yearlyExpense * 25 * state.lifestyleFactor; // 25x rule
+    const corpus = yearlyExpense * 25 * state.lifestyleFactor; // 25× rule
 
     const readiness = corpus > 0 ? clamp(state.currentCorpus / corpus, 0, 1) : 0;
     const yearsFactor = clamp(yearsToFIRE / 35, 0, 1);
     const score = Math.round(readiness * 70 + yearsFactor * 30);
 
-    const r = 0.11 / 12; // 11% annual in mutual funds (approx, illustrative)
+    const r = 0.11 / 12; // 11% annual (illustrative)
     const n = yearsToFIRE * 12;
     let sip = 0;
     if (corpus > state.currentCorpus && n > 0 && r > 0) {
@@ -1367,7 +1574,6 @@
     state.score = isFinite(score) ? score : 0;
     state.sip = sip;
 
-    // Update results panel
     corpusOutput.textContent = formatINR(corpus);
     corpusNote.textContent =
       "Approximate FIRE corpus for a " + state.lifestyleLabel +
@@ -1387,15 +1593,12 @@
         ? "A steady SIP of this amount into suitable mutual funds could help you move towards this FIRE corpus over time."
         : "Try adjusting your FIRE age or expenses to see an indicative SIP.";
 
-    // Personalise summary title if not already
     if (state.name) {
       resultsTitle.textContent = state.name + ", here’s your FIRE snapshot";
     }
 
-    // Badge
     updateBadge(state.score);
 
-    // MF mix
     const mix = getMfMix(yearsToFIRE, state.riskStyle);
     mfMixText.textContent = mix.text;
     mfChipsRow.innerHTML = "";
@@ -1407,7 +1610,6 @@
     });
     mfChipsRow.style.display = "flex";
 
-    // Delay impact
     updateDelayImpact();
   }
 
@@ -1452,7 +1654,7 @@
       (delayYears === 1 ? " year." : " years.");
   }
 
-  // Share + copy
+  // --- Share + copy ---
   copySummaryBtn.addEventListener("click", () => {
     if (!state.corpus || !state.yearsToFire) {
       alert("Please finish the chat to generate your FIRE snapshot first.");
@@ -1496,8 +1698,66 @@
     window.open(url, "_blank");
   });
 
+  // --- Theme toggle ---
+  function applyTheme(theme) {
+    const body = document.body;
+    if (theme === "light") {
+      body.classList.add("light-theme");
+      themeToggle.textContent = "☀️ Light";
+    } else {
+      body.classList.remove("light-theme");
+      themeToggle.textContent = "🌙 Dark";
+    }
+  }
+
+  // load from localStorage if present
+  (function initTheme() {
+    const saved = localStorage.getItem("fireTheme");
+    if (saved === "light" || saved === "dark") {
+      applyTheme(saved);
+    } else {
+      applyTheme("dark");
+    }
+  })();
+
+  themeToggle.addEventListener("click", () => {
+    const isLight = document.body.classList.contains("light-theme");
+    const next = isLight ? "dark" : "light";
+    applyTheme(next);
+    localStorage.setItem("fireTheme", next);
+  });
+
+  // --- Copy-protection: disable right-click + common shortcuts ---
+  document.addEventListener('contextmenu', function (e) {
+    e.preventDefault();
+  });
+
+  document.addEventListener('keydown', function (e) {
+    const key = e.key.toLowerCase();
+    if (
+      (e.ctrlKey && ['c', 'u', 's', 'p'].includes(key)) ||   // Ctrl+C, U, S, P
+      (e.ctrlKey && e.shiftKey && ['i', 'j'].includes(key)) || // Ctrl+Shift+I/J
+      key === 'f12'
+    ) {
+      e.preventDefault();
+    }
+  });
+
   // Start chat
   renderStep();
 </script>
+
+<!-- Google Translate plugin -->
+<script type="text/javascript">
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'en',
+      includedLanguages: 'en,hi,ml,ta,te,kn,bn,mr,pa,gu',
+      layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+    }, 'google_translate_element');
+  }
+</script>
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
 </body>
 </html>
